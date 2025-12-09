@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { Badge } from '@/components/ui/badge';
+import { Star } from 'lucide-react';
 
 interface ProductCardProps {
   id: string;
@@ -12,6 +13,8 @@ interface ProductCardProps {
   buyNowPrice?: number;
   endDate: string;
   sellerName?: string;
+  rating?: number;
+  reviewCount?: number;
 }
 
 export function ProductCard({
@@ -24,6 +27,8 @@ export function ProductCard({
   buyNowPrice,
   endDate,
   sellerName,
+  rating = 4.5,
+  reviewCount = 120,
 }: ProductCardProps) {
   const [timeLeft, setTimeLeft] = useState('');
   const [isEnded, setIsEnded] = useState(false);
@@ -51,7 +56,6 @@ export function ProductCard({
           setTimeLeft(`${seconds}s`);
         }
 
-        // Highlight if ending soon (< 2 hours)
         if (distance < 2 * 60 * 60 * 1000) {
           setIsEnded(true);
         } else {
@@ -76,75 +80,96 @@ export function ProductCard({
   const conditionInfo = conditionConfig[condition];
   const imageUrl = images?.[0] || '/placeholder.svg';
   const displayPrice = currentBid || startingPrice;
+  const originalPrice = buyNowPrice || startingPrice * 1.2;
+
+  const fullStars = Math.floor(rating);
+  const hasHalfStar = rating % 1 !== 0;
 
   return (
     <Link to={`/product/${id}`}>
-      <div className="group bg-card rounded-lg overflow-hidden border border-border shadow-sm hover:shadow-md transition-all duration-300 hover:scale-105 h-full flex flex-col">
+      <div className="group bg-white rounded-lg overflow-hidden border border-border hover:shadow-lg transition-all duration-300 h-full flex flex-col">
         {/* Image Container */}
         <div className="relative overflow-hidden bg-muted aspect-square">
           <img
             src={imageError ? '/placeholder.svg' : imageUrl}
             alt={title}
             onError={() => setImageError(true)}
-            className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
+            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
           />
 
-          {/* Badges */}
-          <div className="absolute top-3 left-3 right-3 flex flex-wrap gap-2">
-            <Badge className={`${conditionInfo.color} border-none`}>
+          {/* Condition Badge */}
+          <div className="absolute top-3 left-3">
+            <Badge className={`${conditionInfo.color} border-none text-xs`}>
               {conditionInfo.label}
             </Badge>
-            {buyNowPrice && (
-              <Badge className="bg-primary text-primary-foreground border-none">
-                Buy Now
-              </Badge>
-            )}
           </div>
 
           {/* Timer Badge */}
-          <div
-            className={`absolute bottom-3 right-3 text-xs font-semibold px-2 py-1 rounded ${
-              isEnded
-                ? 'bg-red-100 text-red-800'
-                : 'bg-white/90 text-foreground'
-            }`}
-          >
-            {timeLeft}
-          </div>
+          {timeLeft && (
+            <div
+              className={`absolute bottom-3 right-3 text-xs font-semibold px-2 py-1 rounded ${
+                isEnded
+                  ? 'bg-red-100 text-red-800'
+                  : 'bg-white text-foreground'
+              }`}
+            >
+              {timeLeft}
+            </div>
+          )}
         </div>
 
         {/* Content */}
         <div className="p-3 flex-1 flex flex-col">
+          {/* Condition Label - smaller for BackMarket style */}
+          <p className="text-xs text-muted-foreground uppercase tracking-wide mb-1">
+            {conditionInfo.label}
+          </p>
+
           {/* Title */}
           <h3 className="font-semibold text-sm line-clamp-2 mb-2 text-foreground">
             {title}
           </h3>
 
-          {/* Seller */}
-          {sellerName && (
-            <p className="text-xs text-muted-foreground mb-2">
-              {sellerName}
-            </p>
-          )}
+          {/* Rating */}
+          <div className="flex items-center gap-1 mb-2">
+            <div className="flex gap-0.5">
+              {[...Array(5)].map((_, i) => (
+                <Star
+                  key={i}
+                  size={12}
+                  className={
+                    i < fullStars
+                      ? 'fill-yellow-400 text-yellow-400'
+                      : i === fullStars && hasHalfStar
+                      ? 'fill-yellow-400 text-yellow-400'
+                      : 'text-gray-300'
+                  }
+                />
+              ))}
+            </div>
+            <span className="text-xs text-muted-foreground">
+              {rating.toFixed(1)} ({reviewCount})
+            </span>
+          </div>
 
           {/* Price Section */}
           <div className="mt-auto space-y-1">
-            <div className="text-xs text-muted-foreground">
-              {currentBid ? 'Current bid' : 'Starting price'}
-            </div>
-            <div className="text-lg font-bold text-primary">
+            <div className="text-sm font-bold text-foreground">
               ${displayPrice.toLocaleString('en-US', {
                 minimumFractionDigits: 2,
                 maximumFractionDigits: 2,
               })}
             </div>
-            {buyNowPrice && (
-              <div className="text-xs text-muted-foreground">
-                Buy now: ${buyNowPrice.toLocaleString('en-US', {
-                  minimumFractionDigits: 2,
-                  maximumFractionDigits: 2,
-                })}
-              </div>
+            <div className="text-xs text-muted-foreground line-through">
+              ${originalPrice.toLocaleString('en-US', {
+                minimumFractionDigits: 2,
+                maximumFractionDigits: 2,
+              })}
+            </div>
+            {sellerName && (
+              <p className="text-xs text-muted-foreground mt-1">
+                {sellerName}
+              </p>
             )}
           </div>
         </div>
