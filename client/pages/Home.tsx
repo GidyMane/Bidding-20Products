@@ -10,13 +10,23 @@ import { ChevronRight, ChevronLeft, ChevronRight as Arrow } from 'lucide-react';
 interface Product {
   id: string;
   title: string;
+  description?: string;
   condition: 'NEW' | 'LIKE_NEW' | 'GOOD' | 'FAIR' | 'POOR';
   images: string[];
   startingPrice: number;
   currentBid?: number;
+  bidsCount?: number;
+  reservePrice?: number;
   buyNowPrice?: number;
   endDate: string;
-  sellerName?: string;
+  sellerId: string;
+  sellerName: string;
+  sellerRating?: number;
+  rating?: number;
+  reviewCount?: number;
+  specifications?: Record<string, any>;
+  isActive?: boolean;
+  categoryId?: string;
 }
 
 interface Category {
