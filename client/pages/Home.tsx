@@ -69,20 +69,33 @@ export default function Home() {
 
       if (featuredRes.ok) {
         const data = await featuredRes.json();
-        setFeaturedProducts(Array.isArray(data) ? data : data.products || []);
+        const products = Array.isArray(data) ? data : data.products || [];
+        setFeaturedProducts(products.length > 0 ? products : mockProducts.slice(0, 6));
+      } else {
+        setFeaturedProducts(mockProducts.slice(0, 6));
       }
 
       if (endingSoonRes.ok) {
         const data = await endingSoonRes.json();
-        setEndingSoonProducts(Array.isArray(data) ? data : data.products || []);
+        const products = Array.isArray(data) ? data : data.products || [];
+        setEndingSoonProducts(products.length > 0 ? products : mockProducts.slice(0, 6));
+      } else {
+        setEndingSoonProducts(mockProducts.slice(0, 6));
       }
 
       if (newestRes.ok) {
         const data = await newestRes.json();
-        setNewestProducts(Array.isArray(data) ? data : data.products || []);
+        const products = Array.isArray(data) ? data : data.products || [];
+        setNewestProducts(products.length > 0 ? products : mockProducts.slice(0, 6));
+      } else {
+        setNewestProducts(mockProducts.slice(0, 6));
       }
     } catch (error) {
       console.error('Error fetching data:', error);
+      // Use mock data on error
+      setFeaturedProducts(mockProducts.slice(0, 6));
+      setEndingSoonProducts(mockProducts.slice(0, 6));
+      setNewestProducts(mockProducts.slice(0, 6));
     } finally {
       setLoadingCategories(false);
       setLoadingProducts(false);
