@@ -12,6 +12,7 @@ import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible';
 import { Filter, X, ChevronDown } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
+import { mockProducts } from '@/lib/mockProducts';
 
 interface Product {
   id: string;
