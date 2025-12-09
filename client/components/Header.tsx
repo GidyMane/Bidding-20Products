@@ -1,9 +1,17 @@
-import { useState, useEffect } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
-import { Search, ShoppingCart, Heart, Menu, X, HelpCircle, Zap } from 'lucide-react';
-import { Input } from '@/components/ui/input';
-import { Button } from '@/components/ui/button';
-import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
+import { useState, useEffect } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import {
+  Search,
+  ShoppingCart,
+  Heart,
+  Menu,
+  X,
+  HelpCircle,
+  Zap,
+} from "lucide-react";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
+import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 
 interface Category {
   id: string;
@@ -12,7 +20,7 @@ interface Category {
 }
 
 export function Header() {
-  const [searchQuery, setSearchQuery] = useState('');
+  const [searchQuery, setSearchQuery] = useState("");
   const [categories, setCategories] = useState<Category[]>([]);
   const [isMobileOpen, setIsMobileOpen] = useState(false);
   const navigate = useNavigate();
@@ -23,11 +31,11 @@ export function Header() {
 
   const fetchCategories = async () => {
     try {
-      const response = await fetch('http://localhost:4000/categories');
+      const response = await fetch("http://localhost:4000/categories");
       const data = await response.json();
       setCategories(data.slice(0, 10));
     } catch (error) {
-      console.error('Error fetching categories:', error);
+      console.error("Error fetching categories:", error);
     }
   };
 
@@ -42,10 +50,18 @@ export function Header() {
     <header className="w-full bg-white border-b border-border sticky top-0 z-50">
       {/* Top Bar */}
       <div className="border-b border-border text-xs py-2 px-4 lg:px-8 flex justify-end gap-4 text-muted-foreground">
-        <a href="#" className="hover:text-foreground">The Back Market Promise</a>
-        <a href="#" className="hover:text-foreground">Repair & Care</a>
-        <a href="#" className="hover:text-foreground">End bad tech</a>
-        <a href="#" className="hover:text-foreground">Tech Journal</a>
+        <a href="#" className="hover:text-foreground">
+          The Back Market Promise
+        </a>
+        <a href="#" className="hover:text-foreground">
+          Repair & Care
+        </a>
+        <a href="#" className="hover:text-foreground">
+          End bad tech
+        </a>
+        <a href="#" className="hover:text-foreground">
+          Tech Journal
+        </a>
         <select className="bg-transparent text-sm">
           <option>🇺🇸 US</option>
         </select>
@@ -173,7 +189,17 @@ export function Header() {
 
         {/* Categories Navigation */}
         <div className="hidden lg:flex gap-6 overflow-x-auto pb-2 -mx-4 px-4">
-          {['All products', 'Smartphones', 'Laptops', 'Tablets', 'Gaming consoles', 'Smartwatches', 'Audio', 'Home appliances', 'More'].map((cat) => (
+          {[
+            "All products",
+            "Smartphones",
+            "Laptops",
+            "Tablets",
+            "Gaming consoles",
+            "Smartwatches",
+            "Audio",
+            "Home appliances",
+            "More",
+          ].map((cat) => (
             <button
               key={cat}
               className="whitespace-nowrap text-sm font-medium text-muted-foreground hover:text-foreground transition-colors"

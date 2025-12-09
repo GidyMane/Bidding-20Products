@@ -1,13 +1,13 @@
-import { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
-import { Badge } from '@/components/ui/badge';
-import { Star, TrendingUp, AlertCircle, Zap } from 'lucide-react';
+import { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
+import { Badge } from "@/components/ui/badge";
+import { Star, TrendingUp, AlertCircle, Zap } from "lucide-react";
 
 interface ProductCardProps {
   id: string;
   title: string;
   description?: string;
-  condition: 'NEW' | 'LIKE_NEW' | 'GOOD' | 'FAIR' | 'POOR';
+  condition: "NEW" | "LIKE_NEW" | "GOOD" | "FAIR" | "POOR";
   images: string[];
   startingPrice: number;
   currentBid?: number;
@@ -42,7 +42,7 @@ export function ProductCard({
   specifications,
   isActive = true,
 }: ProductCardProps) {
-  const [timeLeft, setTimeLeft] = useState('');
+  const [timeLeft, setTimeLeft] = useState("");
   const [isEnded, setIsEnded] = useState(false);
   const [imageError, setImageError] = useState(false);
   const [reserveNotMet, setReserveNotMet] = useState(false);
@@ -55,10 +55,12 @@ export function ProductCard({
       const distance = end - now;
 
       if (distance < 0) {
-        setTimeLeft('Ended');
+        setTimeLeft("Ended");
         setIsEnded(true);
       } else {
-        const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        const hours = Math.floor(
+          (distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60),
+        );
         const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
         const seconds = Math.floor((distance % (1000 * 60)) / 1000);
 
@@ -92,28 +94,32 @@ export function ProductCard({
   }, [endDate, reservePrice, currentBid]);
 
   const conditionConfig = {
-    NEW: { label: 'New', color: 'bg-green-100 text-green-800' },
-    LIKE_NEW: { label: 'Like New', color: 'bg-blue-100 text-blue-800' },
-    GOOD: { label: 'Good', color: 'bg-cyan-100 text-cyan-800' },
-    FAIR: { label: 'Fair', color: 'bg-yellow-100 text-yellow-800' },
-    POOR: { label: 'Poor', color: 'bg-orange-100 text-orange-800' },
+    NEW: { label: "New", color: "bg-green-100 text-green-800" },
+    LIKE_NEW: { label: "Like New", color: "bg-blue-100 text-blue-800" },
+    GOOD: { label: "Good", color: "bg-cyan-100 text-cyan-800" },
+    FAIR: { label: "Fair", color: "bg-yellow-100 text-yellow-800" },
+    POOR: { label: "Poor", color: "bg-orange-100 text-orange-800" },
   };
 
   const conditionInfo = conditionConfig[condition];
-  const imageUrl = images?.[0] || '/placeholder.svg';
-  
+  const imageUrl = images?.[0] || "/placeholder.svg";
+
   // Use current bid if available, otherwise starting price
-  const displayPrice = currentBid !== undefined && currentBid > 0 ? currentBid : startingPrice;
-  const priceLabel = currentBid !== undefined && currentBid > 0 ? 'Current Bid' : 'Starting Price';
+  const displayPrice =
+    currentBid !== undefined && currentBid > 0 ? currentBid : startingPrice;
+  const priceLabel =
+    currentBid !== undefined && currentBid > 0
+      ? "Current Bid"
+      : "Starting Price";
 
   const fullStars = Math.floor(rating || 0);
   const hasHalfStar = (rating || 0) % 1 !== 0;
 
   // Format price with proper decimals
   const formatPrice = (price: number) => {
-    return new Intl.NumberFormat('en-US', {
-      style: 'currency',
-      currency: 'USD',
+    return new Intl.NumberFormat("en-US", {
+      style: "currency",
+      currency: "USD",
       minimumFractionDigits: 0,
       maximumFractionDigits: 0,
     }).format(price);
@@ -125,7 +131,7 @@ export function ProductCard({
         {/* Image Container */}
         <div className="relative overflow-hidden bg-muted aspect-square">
           <img
-            src={imageError ? '/placeholder.svg' : imageUrl}
+            src={imageError ? "/placeholder.svg" : imageUrl}
             alt={title}
             onError={() => setImageError(true)}
             className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
@@ -133,10 +139,12 @@ export function ProductCard({
 
           {/* Badges - Top Left */}
           <div className="absolute top-3 left-3 flex flex-col gap-2">
-            <Badge className={`${conditionInfo.color} border-none text-xs font-medium`}>
+            <Badge
+              className={`${conditionInfo.color} border-none text-xs font-medium`}
+            >
               {conditionInfo.label}
             </Badge>
-            
+
             {isEndingSoon && !isEnded && (
               <Badge className="bg-red-100 text-red-800 border-none text-xs font-medium flex gap-1">
                 <Zap size={12} />
@@ -163,8 +171,8 @@ export function ProductCard({
             <div
               className={`absolute bottom-3 right-3 text-xs font-bold px-2 py-1 rounded transition-colors ${
                 isEndingSoon
-                  ? 'bg-red-500 text-white'
-                  : 'bg-white text-foreground'
+                  ? "bg-red-500 text-white"
+                  : "bg-white text-foreground"
               }`}
             >
               {timeLeft}
@@ -203,10 +211,10 @@ export function ProductCard({
                     size={12}
                     className={
                       i < fullStars
-                        ? 'fill-yellow-400 text-yellow-400'
+                        ? "fill-yellow-400 text-yellow-400"
                         : i === fullStars && hasHalfStar
-                        ? 'fill-yellow-400 text-yellow-400'
-                        : 'text-gray-300'
+                          ? "fill-yellow-400 text-yellow-400"
+                          : "text-gray-300"
                     }
                   />
                 ))}
@@ -221,7 +229,9 @@ export function ProductCard({
           {bidsCount > 0 && (
             <div className="text-xs text-muted-foreground mb-2 flex items-center gap-1">
               <TrendingUp size={12} />
-              <span>{bidsCount} bid{bidsCount !== 1 ? 's' : ''}</span>
+              <span>
+                {bidsCount} bid{bidsCount !== 1 ? "s" : ""}
+              </span>
             </div>
           )}
 
@@ -230,7 +240,7 @@ export function ProductCard({
             <div className="text-xs text-muted-foreground uppercase font-medium tracking-wide">
               {priceLabel}
             </div>
-            
+
             <div className="text-lg font-bold text-foreground">
               {formatPrice(displayPrice)}
             </div>
@@ -260,11 +270,17 @@ export function ProductCard({
             {sellerName && (
               <div className="mt-2 pt-2 border-t border-border space-y-1">
                 <p className="text-xs text-muted-foreground">
-                  Sold by: <span className="font-medium text-foreground">{sellerName}</span>
+                  Sold by:{" "}
+                  <span className="font-medium text-foreground">
+                    {sellerName}
+                  </span>
                 </p>
                 {sellerRating && (
                   <div className="flex items-center gap-1">
-                    <Star size={11} className="fill-yellow-400 text-yellow-400" />
+                    <Star
+                      size={11}
+                      className="fill-yellow-400 text-yellow-400"
+                    />
                     <span className="text-xs text-muted-foreground">
                       {sellerRating.toFixed(1)} seller rating
                     </span>

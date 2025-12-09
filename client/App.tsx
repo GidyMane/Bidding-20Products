@@ -17,7 +17,10 @@ const ProductDetailPlaceholder = () => (
   <Layout>
     <div className="max-w-7xl mx-auto px-4 lg:px-8 py-8">
       <h1 className="text-3xl font-bold">Product Details</h1>
-      <p className="text-muted-foreground mt-2">Product detail page coming soon. Use the back button to continue shopping.</p>
+      <p className="text-muted-foreground mt-2">
+        Product detail page coming soon. Use the back button to continue
+        shopping.
+      </p>
     </div>
   </Layout>
 );
@@ -37,5 +40,5 @@ createRoot(document.getElementById("root")!).render(
         </Routes>
       </BrowserRouter>
     </TooltipProvider>
-  </QueryClientProvider>
+  </QueryClientProvider>,
 );

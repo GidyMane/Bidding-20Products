@@ -1,18 +1,18 @@
-import { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { Layout } from '@/components/Layout';
-import { ProductCard } from '@/components/ProductCard';
-import { Carousel } from '@/components/Carousel';
-import { Button } from '@/components/ui/button';
-import { Skeleton } from '@/components/ui/skeleton';
-import { ChevronRight, ChevronLeft, ChevronRight as Arrow } from 'lucide-react';
-import { mockProducts } from '@/lib/mockProducts';
+import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import { Layout } from "@/components/Layout";
+import { ProductCard } from "@/components/ProductCard";
+import { Carousel } from "@/components/Carousel";
+import { Button } from "@/components/ui/button";
+import { Skeleton } from "@/components/ui/skeleton";
+import { ChevronRight, ChevronLeft, ChevronRight as Arrow } from "lucide-react";
+import { mockProducts } from "@/lib/mockProducts";
 
 interface Product {
   id: string;
   title: string;
   description?: string;
-  condition: 'NEW' | 'LIKE_NEW' | 'GOOD' | 'FAIR' | 'POOR';
+  condition: "NEW" | "LIKE_NEW" | "GOOD" | "FAIR" | "POOR";
   images: string[];
   startingPrice: number;
   currentBid?: number;
@@ -55,12 +55,13 @@ export default function Home() {
       setLoadingCategories(true);
       setLoadingProducts(true);
 
-      const [categoriesRes, featuredRes, endingSoonRes, newestRes] = await Promise.all([
-        fetch('http://localhost:4000/categories'),
-        fetch('http://localhost:4000/products/newest?limit=20'),
-        fetch('http://localhost:4000/products/ending-soon?limit=20'),
-        fetch('http://localhost:4000/products/newest?limit=20'),
-      ]);
+      const [categoriesRes, featuredRes, endingSoonRes, newestRes] =
+        await Promise.all([
+          fetch("http://localhost:4000/categories"),
+          fetch("http://localhost:4000/products/newest?limit=20"),
+          fetch("http://localhost:4000/products/ending-soon?limit=20"),
+          fetch("http://localhost:4000/products/newest?limit=20"),
+        ]);
 
       if (categoriesRes.ok) {
         const catData = await categoriesRes.json();
@@ -70,7 +71,9 @@ export default function Home() {
       if (featuredRes.ok) {
         const data = await featuredRes.json();
         const products = Array.isArray(data) ? data : data.products || [];
-        setFeaturedProducts(products.length > 0 ? products : mockProducts.slice(0, 6));
+        setFeaturedProducts(
+          products.length > 0 ? products : mockProducts.slice(0, 6),
+        );
       } else {
         setFeaturedProducts(mockProducts.slice(0, 6));
       }
@@ -78,7 +81,9 @@ export default function Home() {
       if (endingSoonRes.ok) {
         const data = await endingSoonRes.json();
         const products = Array.isArray(data) ? data : data.products || [];
-        setEndingSoonProducts(products.length > 0 ? products : mockProducts.slice(0, 6));
+        setEndingSoonProducts(
+          products.length > 0 ? products : mockProducts.slice(0, 6),
+        );
       } else {
         setEndingSoonProducts(mockProducts.slice(0, 6));
       }
@@ -86,12 +91,14 @@ export default function Home() {
       if (newestRes.ok) {
         const data = await newestRes.json();
         const products = Array.isArray(data) ? data : data.products || [];
-        setNewestProducts(products.length > 0 ? products : mockProducts.slice(0, 6));
+        setNewestProducts(
+          products.length > 0 ? products : mockProducts.slice(0, 6),
+        );
       } else {
         setNewestProducts(mockProducts.slice(0, 6));
       }
     } catch (error) {
-      console.error('Error fetching data:', error);
+      console.error("Error fetching data:", error);
       // Use mock data on error
       setFeaturedProducts(mockProducts.slice(0, 6));
       setEndingSoonProducts(mockProducts.slice(0, 6));
@@ -134,7 +141,7 @@ export default function Home() {
                 <Button
                   size="lg"
                   className="bg-foreground text-primary hover:bg-foreground/90 font-semibold"
-                  onClick={() => navigate('/browse')}
+                  onClick={() => navigate("/browse")}
                 >
                   Don't wait
                 </Button>
@@ -158,16 +165,24 @@ export default function Home() {
                 <div
                   key={i}
                   className={`h-2 rounded-full transition-all ${
-                    i === 0 ? 'w-8 bg-foreground' : 'w-2 bg-foreground/40'
+                    i === 0 ? "w-8 bg-foreground" : "w-2 bg-foreground/40"
                   }`}
                 />
               ))}
             </div>
             <div className="flex gap-2">
-              <Button variant="ghost" size="icon" className="rounded-full bg-foreground text-primary">
+              <Button
+                variant="ghost"
+                size="icon"
+                className="rounded-full bg-foreground text-primary"
+              >
                 <ChevronLeft size={20} />
               </Button>
-              <Button variant="ghost" size="icon" className="rounded-full bg-foreground text-primary">
+              <Button
+                variant="ghost"
+                size="icon"
+                className="rounded-full bg-foreground text-primary"
+              >
                 <ChevronRight size={20} />
               </Button>
             </div>
@@ -182,7 +197,7 @@ export default function Home() {
             Where the world shops refurbished tech.
           </h2>
           <p className="text-center text-muted-foreground mb-12">
-            Everything you love about new, for less.{' '}
+            Everything you love about new, for less.{" "}
             <a href="#" className="underline text-foreground font-semibold">
               Guaranteed by the Back Market Promise.
             </a>
@@ -191,11 +206,15 @@ export default function Home() {
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
             <div className="text-center">
               <div className="text-3xl mb-2">⭐</div>
-              <p className="font-semibold text-sm">Best-in-class refurbishment</p>
+              <p className="font-semibold text-sm">
+                Best-in-class refurbishment
+              </p>
             </div>
             <div className="text-center">
               <div className="text-3xl mb-2">🔍</div>
-              <p className="font-semibold text-sm">Up to 100-point quality inspection</p>
+              <p className="font-semibold text-sm">
+                Up to 100-point quality inspection
+              </p>
             </div>
             <div className="text-center">
               <div className="text-3xl mb-2">📦</div>
@@ -218,7 +237,7 @@ export default function Home() {
             </h2>
             <Button
               variant="ghost"
-              onClick={() => navigate('/browse')}
+              onClick={() => navigate("/browse")}
               className="text-primary hover:text-primary/80"
             >
               See all
@@ -253,7 +272,7 @@ export default function Home() {
             </h2>
             <Button
               variant="ghost"
-              onClick={() => navigate('/browse?sortBy=newest')}
+              onClick={() => navigate("/browse?sortBy=newest")}
               className="text-primary hover:text-primary/80"
             >
               See all
@@ -272,10 +291,15 @@ export default function Home() {
           ) : endingSoonProducts.length > 0 ? (
             <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-4 gap-4 lg:gap-6">
               {endingSoonProducts.slice(0, 4).map((product) => (
-                <div key={product.id} className="rounded-lg overflow-hidden bg-primary p-4 flex items-center justify-center min-h-48">
+                <div
+                  key={product.id}
+                  className="rounded-lg overflow-hidden bg-primary p-4 flex items-center justify-center min-h-48"
+                >
                   <div className="text-center text-white">
                     <p className="text-3xl mb-2">📱</p>
-                    <p className="font-semibold">{product.title.split(' ').slice(0, 2).join(' ')}</p>
+                    <p className="font-semibold">
+                      {product.title.split(" ").slice(0, 2).join(" ")}
+                    </p>
                   </div>
                 </div>
               ))}
@@ -288,12 +312,10 @@ export default function Home() {
       <section className="py-12 lg:py-16">
         <div className="max-w-7xl mx-auto px-4 lg:px-8">
           <div className="flex items-center justify-between mb-8">
-            <h2 className="text-2xl lg:text-3xl font-bold">
-              Ending soon
-            </h2>
+            <h2 className="text-2xl lg:text-3xl font-bold">Ending soon</h2>
             <Button
               variant="ghost"
-              onClick={() => navigate('/browse?sortBy=endDate')}
+              onClick={() => navigate("/browse?sortBy=endDate")}
               className="text-primary hover:text-primary/80"
             >
               See all
@@ -331,7 +353,7 @@ export default function Home() {
           <Button
             size="lg"
             className="bg-primary text-primary-foreground hover:bg-primary/90"
-            onClick={() => navigate('/browse')}
+            onClick={() => navigate("/browse")}
           >
             Start shopping
           </Button>

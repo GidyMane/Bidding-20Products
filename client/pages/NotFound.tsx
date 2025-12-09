@@ -17,10 +17,13 @@ const NotFound = () => {
     <Layout>
       <div className="min-h-[60vh] flex items-center justify-center">
         <div className="text-center max-w-md px-4">
-          <h1 className="text-5xl lg:text-6xl font-bold text-primary mb-4">404</h1>
+          <h1 className="text-5xl lg:text-6xl font-bold text-primary mb-4">
+            404
+          </h1>
           <h2 className="text-2xl font-bold mb-2">Page Not Found</h2>
           <p className="text-muted-foreground mb-8">
-            We couldn't find the page you're looking for. The item may have been removed or the URL might be incorrect.
+            We couldn't find the page you're looking for. The item may have been
+            removed or the URL might be incorrect.
           </p>
           <Button asChild>
             <a href="/">Return to Home</a>

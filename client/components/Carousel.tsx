@@ -1,6 +1,6 @@
-import { ReactNode, useState, useRef, useEffect } from 'react';
-import { ChevronLeft, ChevronRight } from 'lucide-react';
-import { Button } from '@/components/ui/button';
+import { ReactNode, useState, useRef, useEffect } from "react";
+import { ChevronLeft, ChevronRight } from "lucide-react";
+import { Button } from "@/components/ui/button";
 
 interface CarouselProps {
   children: ReactNode[];
@@ -24,7 +24,8 @@ export function Carousel({
     if (container) {
       setCanScrollLeft(container.scrollLeft > 0);
       setCanScrollRight(
-        container.scrollLeft < container.scrollWidth - container.clientWidth - 10
+        container.scrollLeft <
+          container.scrollWidth - container.clientWidth - 10,
       );
     }
   };
@@ -33,18 +34,18 @@ export function Carousel({
     checkScroll();
     const container = scrollContainerRef.current;
     if (container) {
-      container.addEventListener('scroll', checkScroll);
-      return () => container.removeEventListener('scroll', checkScroll);
+      container.addEventListener("scroll", checkScroll);
+      return () => container.removeEventListener("scroll", checkScroll);
     }
   }, [children]);
 
-  const scroll = (direction: 'left' | 'right') => {
+  const scroll = (direction: "left" | "right") => {
     const container = scrollContainerRef.current;
     if (container) {
       const scrollAmount = (container.clientWidth / itemsPerView) * 1.5;
       container.scrollBy({
-        left: direction === 'left' ? -scrollAmount : scrollAmount,
-        behavior: 'smooth',
+        left: direction === "left" ? -scrollAmount : scrollAmount,
+        behavior: "smooth",
       });
     }
   };
@@ -57,7 +58,7 @@ export function Carousel({
           variant="ghost"
           size="icon"
           className="absolute -left-6 top-1/3 -translate-y-1/2 z-10 rounded-full bg-black text-white hover:bg-black/80"
-          onClick={() => scroll('left')}
+          onClick={() => scroll("left")}
         >
           <ChevronLeft size={24} />
         </Button>
@@ -68,9 +69,9 @@ export function Carousel({
         ref={scrollContainerRef}
         className="overflow-x-auto scrollbar-hide"
         style={{
-          display: 'flex',
+          display: "flex",
           gap: `${gap}px`,
-          scrollBehavior: 'smooth',
+          scrollBehavior: "smooth",
         }}
       >
         {children.map((child, index) => (
@@ -91,7 +92,7 @@ export function Carousel({
           variant="ghost"
           size="icon"
           className="absolute -right-6 top-1/3 -translate-y-1/2 z-10 rounded-full bg-black text-white hover:bg-black/80"
-          onClick={() => scroll('right')}
+          onClick={() => scroll("right")}
         >
           <ChevronRight size={24} />
         </Button>

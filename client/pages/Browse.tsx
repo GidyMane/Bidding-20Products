@@ -1,24 +1,34 @@
-import { useState, useEffect } from 'react';
-import { useSearchParams } from 'react-router-dom';
-import { Layout } from '@/components/Layout';
-import { ProductCard } from '@/components/ProductCard';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Checkbox } from '@/components/ui/checkbox';
-import { Slider } from '@/components/ui/slider';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Skeleton } from '@/components/ui/skeleton';
-import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
-import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible';
-import { Filter, X, ChevronDown } from 'lucide-react';
-import { Badge } from '@/components/ui/badge';
-import { mockProducts } from '@/lib/mockProducts';
+import { useState, useEffect } from "react";
+import { useSearchParams } from "react-router-dom";
+import { Layout } from "@/components/Layout";
+import { ProductCard } from "@/components/ProductCard";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Checkbox } from "@/components/ui/checkbox";
+import { Slider } from "@/components/ui/slider";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { Skeleton } from "@/components/ui/skeleton";
+import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
+import {
+  Collapsible,
+  CollapsibleContent,
+  CollapsibleTrigger,
+} from "@/components/ui/collapsible";
+import { Filter, X, ChevronDown } from "lucide-react";
+import { Badge } from "@/components/ui/badge";
+import { mockProducts } from "@/lib/mockProducts";
 
 interface Product {
   id: string;
   title: string;
   description?: string;
-  condition: 'NEW' | 'LIKE_NEW' | 'GOOD' | 'FAIR' | 'POOR';
+  condition: "NEW" | "LIKE_NEW" | "GOOD" | "FAIR" | "POOR";
   images: string[];
   startingPrice: number;
   currentBid?: number;
@@ -43,7 +53,7 @@ interface Category {
   children?: Category[];
 }
 
-const CONDITIONS = ['NEW', 'LIKE_NEW', 'GOOD', 'FAIR', 'POOR'] as const;
+const CONDITIONS = ["NEW", "LIKE_NEW", "GOOD", "FAIR", "POOR"] as const;
 
 export default function Browse() {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -53,19 +63,21 @@ export default function Browse() {
   const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false);
 
   // Filter states
-  const [searchQuery, setSearchQuery] = useState(searchParams.get('query') || '');
-  const [selectedCategory, setSelectedCategory] = useState(searchParams.get('categoryId') || '');
+  const [searchQuery, setSearchQuery] = useState(
+    searchParams.get("query") || "",
+  );
+  const [selectedCategory, setSelectedCategory] = useState(
+    searchParams.get("categoryId") || "",
+  );
   const [selectedConditions, setSelectedConditions] = useState<string[]>(
-    searchParams.get('condition')?.split(',') || []
+    searchParams.get("condition")?.split(",") || [],
   );
-  const [priceRange, setPriceRange] = useState<[number, number]>(
-    [
-      parseInt(searchParams.get('minPrice') || '0'),
-      parseInt(searchParams.get('maxPrice') || '10000'),
-    ]
-  );
-  const [sortBy, setSortBy] = useState(searchParams.get('sortBy') || 'newest');
-  const [page, setPage] = useState(parseInt(searchParams.get('page') || '1'));
+  const [priceRange, setPriceRange] = useState<[number, number]>([
+    parseInt(searchParams.get("minPrice") || "0"),
+    parseInt(searchParams.get("maxPrice") || "10000"),
+  ]);
+  const [sortBy, setSortBy] = useState(searchParams.get("sortBy") || "newest");
+  const [page, setPage] = useState(parseInt(searchParams.get("page") || "1"));
 
   useEffect(() => {
     fetchCategories();
@@ -73,17 +85,24 @@ export default function Browse() {
 
   useEffect(() => {
     fetchProducts();
-  }, [searchQuery, selectedCategory, selectedConditions, priceRange, sortBy, page]);
+  }, [
+    searchQuery,
+    selectedCategory,
+    selectedConditions,
+    priceRange,
+    sortBy,
+    page,
+  ]);
 
   const fetchCategories = async () => {
     try {
-      const response = await fetch('http://localhost:4000/categories');
+      const response = await fetch("http://localhost:4000/categories");
       if (response.ok) {
         const data = await response.json();
         setCategories(data);
       }
     } catch (error) {
-      console.error('Error fetching categories:', error);
+      console.error("Error fetching categories:", error);
     }
   };
 
@@ -92,17 +111,18 @@ export default function Browse() {
       setLoading(true);
       const params = new URLSearchParams();
 
-      if (searchQuery) params.append('query', searchQuery);
-      if (selectedCategory) params.append('categoryId', selectedCategory);
-      if (selectedConditions.length > 0) params.append('condition', selectedConditions.join(','));
-      params.append('minPrice', priceRange[0].toString());
-      params.append('maxPrice', priceRange[1].toString());
-      params.append('sortBy', sortBy);
-      params.append('page', page.toString());
-      params.append('limit', '20');
+      if (searchQuery) params.append("query", searchQuery);
+      if (selectedCategory) params.append("categoryId", selectedCategory);
+      if (selectedConditions.length > 0)
+        params.append("condition", selectedConditions.join(","));
+      params.append("minPrice", priceRange[0].toString());
+      params.append("maxPrice", priceRange[1].toString());
+      params.append("sortBy", sortBy);
+      params.append("page", page.toString());
+      params.append("limit", "20");
 
       const response = await fetch(
-        `http://localhost:4000/products/search?${params}`
+        `http://localhost:4000/products/search?${params}`,
       );
 
       if (response.ok) {
@@ -113,7 +133,7 @@ export default function Browse() {
         setProducts(mockProducts.slice(0, 20));
       }
     } catch (error) {
-      console.error('Error fetching products:', error);
+      console.error("Error fetching products:", error);
       // Use mock data on error
       setProducts(mockProducts.slice(0, 20));
     } finally {
@@ -125,9 +145,10 @@ export default function Browse() {
     e.preventDefault();
     setPage(1);
     const params = new URLSearchParams();
-    if (searchQuery) params.append('query', searchQuery);
-    if (selectedCategory) params.append('categoryId', selectedCategory);
-    if (selectedConditions.length > 0) params.append('condition', selectedConditions.join(','));
+    if (searchQuery) params.append("query", searchQuery);
+    if (selectedCategory) params.append("categoryId", selectedCategory);
+    if (selectedConditions.length > 0)
+      params.append("condition", selectedConditions.join(","));
     setSearchParams(params);
   };
 
@@ -135,17 +156,17 @@ export default function Browse() {
     setSelectedConditions((prev) =>
       prev.includes(condition)
         ? prev.filter((c) => c !== condition)
-        : [...prev, condition]
+        : [...prev, condition],
     );
     setPage(1);
   };
 
   const handleClearFilters = () => {
-    setSearchQuery('');
-    setSelectedCategory('');
+    setSearchQuery("");
+    setSelectedCategory("");
     setSelectedConditions([]);
     setPriceRange([0, 10000]);
-    setSortBy('newest');
+    setSortBy("newest");
     setPage(1);
     setSearchParams({});
   };
@@ -204,7 +225,7 @@ export default function Browse() {
                 htmlFor={condition}
                 className="text-sm cursor-pointer flex-1"
               >
-                {condition.replace('_', ' ')}
+                {condition.replace("_", " ")}
               </label>
             </div>
           ))}
@@ -241,7 +262,10 @@ export default function Browse() {
                 type="number"
                 value={priceRange[1]}
                 onChange={(e) =>
-                  setPriceRange([priceRange[0], parseInt(e.target.value) || 10000])
+                  setPriceRange([
+                    priceRange[0],
+                    parseInt(e.target.value) || 10000,
+                  ])
                 }
                 className="h-8"
               />
@@ -254,7 +278,7 @@ export default function Browse() {
       {(searchQuery ||
         selectedCategory ||
         selectedConditions.length > 0 ||
-        sortBy !== 'newest') && (
+        sortBy !== "newest") && (
         <Button
           variant="outline"
           className="w-full"
