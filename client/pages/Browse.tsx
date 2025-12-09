@@ -107,10 +107,15 @@ export default function Browse() {
 
       if (response.ok) {
         const data = await response.json();
-        setProducts(Array.isArray(data) ? data : data.products || []);
+        const products = Array.isArray(data) ? data : data.products || [];
+        setProducts(products.length > 0 ? products : mockProducts.slice(0, 20));
+      } else {
+        setProducts(mockProducts.slice(0, 20));
       }
     } catch (error) {
       console.error('Error fetching products:', error);
+      // Use mock data on error
+      setProducts(mockProducts.slice(0, 20));
     } finally {
       setLoading(false);
     }
