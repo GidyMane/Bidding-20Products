@@ -13,7 +13,16 @@ import { Layout } from "./components/Layout";
 
 const queryClient = new QueryClient();
 
-const App = () => (
+const ProductDetailPlaceholder = () => (
+  <Layout>
+    <div className="max-w-7xl mx-auto px-4 lg:px-8 py-8">
+      <h1 className="text-3xl font-bold">Product Details</h1>
+      <p className="text-muted-foreground mt-2">Product detail page coming soon. Use the back button to continue shopping.</p>
+    </div>
+  </Layout>
+);
+
+createRoot(document.getElementById("root")!).render(
   <QueryClientProvider client={queryClient}>
     <TooltipProvider>
       <Toaster />
@@ -22,7 +31,7 @@ const App = () => (
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/browse" element={<Browse />} />
-          <Route path="/product/:id" element={<Layout><div className="max-w-7xl mx-auto px-4 lg:px-8 py-8"><h1 className="text-3xl font-bold">Product Details</h1><p className="text-muted-foreground mt-2">Product detail page coming soon. Use the back button to continue shopping.</p></div></Layout>} />
+          <Route path="/product/:id" element={<ProductDetailPlaceholder />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>
@@ -30,5 +39,3 @@ const App = () => (
     </TooltipProvider>
   </QueryClientProvider>
 );
-
-createRoot(document.getElementById("root")!).render(<App />);
