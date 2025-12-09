@@ -6,6 +6,7 @@ import { Carousel } from '@/components/Carousel';
 import { Button } from '@/components/ui/button';
 import { Skeleton } from '@/components/ui/skeleton';
 import { ChevronRight, ChevronLeft, ChevronRight as Arrow } from 'lucide-react';
+import { mockProducts } from '@/lib/mockProducts';
 
 interface Product {
   id: string;
