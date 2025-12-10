@@ -1,27 +1,20 @@
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { Badge } from "@/components/ui/badge";
-import { Star, TrendingUp, AlertCircle, Zap } from "lucide-react";
+import { Star, TrendingUp, AlertCircle, Clock } from "lucide-react";
 
 interface ProductCardProps {
   id: string;
   title: string;
-  description?: string;
   condition: "NEW" | "LIKE_NEW" | "GOOD" | "FAIR" | "POOR";
   images: string[];
   startingPrice: number;
-  currentBid?: number;
-  bidsCount?: number;
-  reservePrice?: number;
-  buyNowPrice?: number;
+  currentBid: number;
+  bidsCount: number;
   endDate: string;
   sellerName: string;
-  sellerRating?: number;
+  sellerRating: number;
   rating?: number;
-  reviewCount?: number;
-  specifications?: Record<string, any>;
-  isActive?: boolean;
-  categoryId?: string;
 }
 
 export function ProductCard({
@@ -31,21 +24,15 @@ export function ProductCard({
   images,
   startingPrice,
   currentBid,
-  bidsCount = 0,
-  reservePrice,
-  buyNowPrice,
+  bidsCount,
   endDate,
   sellerName,
-  sellerRating = 4.5,
+  sellerRating,
   rating = 4.5,
-  reviewCount = 0,
-  specifications,
-  isActive = true,
 }: ProductCardProps) {
   const [timeLeft, setTimeLeft] = useState("");
   const [isEnded, setIsEnded] = useState(false);
   const [imageError, setImageError] = useState(false);
-  const [reserveNotMet, setReserveNotMet] = useState(false);
   const [isEndingSoon, setIsEndingSoon] = useState(false);
 
   useEffect(() => {
@@ -58,18 +45,18 @@ export function ProductCard({
         setTimeLeft("Ended");
         setIsEnded(true);
       } else {
+        const days = Math.floor(distance / (1000 * 60 * 60 * 24));
         const hours = Math.floor(
           (distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60),
         );
         const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-        const seconds = Math.floor((distance % (1000 * 60)) / 1000);
 
-        if (hours > 0) {
+        if (days > 0) {
+          setTimeLeft(`${days}d ${hours}h`);
+        } else if (hours > 0) {
           setTimeLeft(`${hours}h ${minutes}m`);
-        } else if (minutes > 0) {
-          setTimeLeft(`${minutes}m`);
         } else {
-          setTimeLeft(`${seconds}s`);
+          setTimeLeft(`${minutes}m`);
         }
 
         // Check if ending soon (< 2 hours)
@@ -79,21 +66,14 @@ export function ProductCard({
           setIsEndingSoon(false);
         }
       }
-
-      // Check if reserve not met
-      if (reservePrice && currentBid && currentBid < reservePrice) {
-        setReserveNotMet(true);
-      } else {
-        setReserveNotMet(false);
-      }
     };
 
     updateCountdown();
-    const interval = setInterval(updateCountdown, 1000);
+    const interval = setInterval(updateCountdown, 60000);
     return () => clearInterval(interval);
-  }, [endDate, reservePrice, currentBid]);
+  }, [endDate]);
 
-  const conditionConfig = {
+  const conditionConfig: Record<string, { label: string; color: string }> = {
     NEW: { label: "New", color: "bg-green-100 text-green-800" },
     LIKE_NEW: { label: "Like New", color: "bg-blue-100 text-blue-800" },
     GOOD: { label: "Good", color: "bg-cyan-100 text-cyan-800" },
@@ -101,21 +81,16 @@ export function ProductCard({
     POOR: { label: "Poor", color: "bg-orange-100 text-orange-800" },
   };
 
-  const conditionInfo = conditionConfig[condition];
+  const conditionInfo =
+    (condition && conditionConfig[condition]) || conditionConfig.GOOD;
   const imageUrl = images?.[0] || "/placeholder.svg";
 
-  // Use current bid if available, otherwise starting price
-  const displayPrice =
-    currentBid !== undefined && currentBid > 0 ? currentBid : startingPrice;
-  const priceLabel =
-    currentBid !== undefined && currentBid > 0
-      ? "Current Bid"
-      : "Starting Price";
+  // Display current bid or starting price
+  const displayPrice = currentBid > 0 ? currentBid : startingPrice;
+  const priceLabel = currentBid > 0 ? "Current Bid" : "Starting Bid";
 
   const fullStars = Math.floor(rating || 0);
-  const hasHalfStar = (rating || 0) % 1 !== 0;
 
-  // Format price with proper decimals
   const formatPrice = (price: number) => {
     return new Intl.NumberFormat("en-US", {
       style: "currency",
@@ -137,157 +112,75 @@ export function ProductCard({
             className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
           />
 
-          {/* Badges - Top Left */}
-          <div className="absolute top-3 left-3 flex flex-col gap-2">
+          {/* Condition Badge */}
+          <div className="absolute top-3 left-3">
             <Badge
               className={`${conditionInfo.color} border-none text-xs font-medium`}
             >
               {conditionInfo.label}
             </Badge>
-
-            {isEndingSoon && !isEnded && (
-              <Badge className="bg-red-100 text-red-800 border-none text-xs font-medium flex gap-1">
-                <Zap size={12} />
-                Ending Soon
-              </Badge>
-            )}
-
-            {reserveNotMet && currentBid && (
-              <Badge className="bg-gray-200 text-gray-800 border-none text-xs font-medium flex gap-1">
-                <AlertCircle size={12} />
-                Reserve Not Met
-              </Badge>
-            )}
-
-            {buyNowPrice && !isEnded && (
-              <Badge className="bg-primary text-primary-foreground border-none text-xs font-medium">
-                Buy Now
-              </Badge>
-            )}
           </div>
 
-          {/* Timer Badge - Bottom Right */}
-          {!isEnded && (
-            <div
-              className={`absolute bottom-3 right-3 text-xs font-bold px-2 py-1 rounded transition-colors ${
-                isEndingSoon
-                  ? "bg-red-500 text-white"
-                  : "bg-white text-foreground"
-              }`}
-            >
-              {timeLeft}
+          {/* Ending Soon Badge */}
+          {isEndingSoon && !isEnded && (
+            <div className="absolute top-3 right-3">
+              <Badge className="bg-red-100 text-red-800 border-none text-xs font-medium flex gap-1 items-center">
+                <Clock size={12} />
+                Ending Soon
+              </Badge>
             </div>
           )}
 
-          {/* Ended Badge */}
+          {/* Auction Ended Badge */}
           {isEnded && (
             <div className="absolute inset-0 bg-black/40 flex items-center justify-center">
-              <div className="bg-black text-white px-4 py-2 rounded font-bold text-sm">
+              <Badge className="bg-gray-800 text-white border-none text-sm font-medium">
                 Auction Ended
-              </div>
+              </Badge>
             </div>
           )}
         </div>
 
-        {/* Content */}
-        <div className="p-3 flex-1 flex flex-col">
-          {/* Condition Label */}
-          <p className="text-xs text-muted-foreground uppercase tracking-wide mb-1 font-medium">
-            {conditionInfo.label}
-          </p>
-
-          {/* Title - Truncate to 2 lines */}
-          <h3 className="font-semibold text-sm line-clamp-2 mb-2 text-foreground leading-snug">
+        {/* Card Content */}
+        <div className="flex-1 p-3 flex flex-col justify-between">
+          {/* Title */}
+          <h3 className="text-sm font-semibold line-clamp-2 text-foreground mb-2">
             {title}
           </h3>
 
-          {/* Rating & Reviews */}
-          {(rating || 0) > 0 && (
-            <div className="flex items-center gap-1 mb-2">
-              <div className="flex gap-0.5">
-                {[...Array(5)].map((_, i) => (
-                  <Star
-                    key={i}
-                    size={12}
-                    className={
-                      i < fullStars
-                        ? "fill-yellow-400 text-yellow-400"
-                        : i === fullStars && hasHalfStar
-                          ? "fill-yellow-400 text-yellow-400"
-                          : "text-gray-300"
-                    }
-                  />
-                ))}
-              </div>
-              <span className="text-xs text-muted-foreground whitespace-nowrap">
-                {rating?.toFixed(1)} ({reviewCount})
-              </span>
-            </div>
-          )}
-
-          {/* Bid Count - Auction Indicator */}
-          {bidsCount > 0 && (
-            <div className="text-xs text-muted-foreground mb-2 flex items-center gap-1">
-              <TrendingUp size={12} />
-              <span>
-                {bidsCount} bid{bidsCount !== 1 ? "s" : ""}
-              </span>
-            </div>
-          )}
-
-          {/* Price Section - Auction Focused */}
-          <div className="mt-auto space-y-1">
-            <div className="text-xs text-muted-foreground uppercase font-medium tracking-wide">
-              {priceLabel}
+          {/* Bid Information */}
+          <div className="space-y-2">
+            {/* Current Bid */}
+            <div>
+              <p className="text-xs text-muted-foreground">{priceLabel}</p>
+              <p className="text-lg font-bold text-primary">
+                {formatPrice(displayPrice)}
+              </p>
             </div>
 
-            <div className="text-lg font-bold text-foreground">
-              {formatPrice(displayPrice)}
+            {/* Bids Count */}
+            {bidsCount > 0 && (
+              <p className="text-xs text-muted-foreground">
+                {bidsCount} {bidsCount === 1 ? "bid" : "bids"}
+              </p>
+            )}
+
+            {/* Time Remaining */}
+            <div className="flex items-center gap-1 text-xs font-medium text-foreground">
+              <Clock size={12} />
+              {isEnded ? "Ended" : timeLeft}
             </div>
+          </div>
 
-            {/* Show Buy Now Price if different from current bid */}
-            {buyNowPrice && buyNowPrice !== currentBid && (
-              <div className="text-xs text-muted-foreground">
-                Buy now: {formatPrice(buyNowPrice)}
-              </div>
-            )}
-
-            {/* Show starting price if current bid exists and is different */}
-            {currentBid && currentBid > startingPrice && (
-              <div className="text-xs text-muted-foreground line-through">
-                Started at {formatPrice(startingPrice)}
-              </div>
-            )}
-
-            {/* Reserve Price Info */}
-            {reservePrice && currentBid && currentBid < reservePrice && (
-              <div className="text-xs text-orange-600 font-medium">
-                Reserve: {formatPrice(reservePrice)}
-              </div>
-            )}
-
-            {/* Seller Info */}
-            {sellerName && (
-              <div className="mt-2 pt-2 border-t border-border space-y-1">
-                <p className="text-xs text-muted-foreground">
-                  Sold by:{" "}
-                  <span className="font-medium text-foreground">
-                    {sellerName}
-                  </span>
-                </p>
-                {sellerRating && (
-                  <div className="flex items-center gap-1">
-                    <Star
-                      size={11}
-                      className="fill-yellow-400 text-yellow-400"
-                    />
-                    <span className="text-xs text-muted-foreground">
-                      {sellerRating.toFixed(1)} seller rating
-                    </span>
-                  </div>
-                )}
-              </div>
-            )}
+          {/* Seller Info */}
+          <div className="mt-2 pt-2 border-t border-border">
+            <p className="text-xs text-muted-foreground">
+              Seller: {sellerName}
+            </p>
+            <div className="flex items-center gap-1 mt-1">
+              <Star size={12} className="fill-yellow-400 text-yellow-400" />
+              <span className="text-xs font-medium">{sellerRating}</span>
+            </div>
           </div>
         </div>
       </div>

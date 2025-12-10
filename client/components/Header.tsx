@@ -1,14 +1,6 @@
 import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import {
-  Search,
-  ShoppingCart,
-  Heart,
-  Menu,
-  X,
-  HelpCircle,
-  Zap,
-} from "lucide-react";
+import { Search, ShoppingCart, Heart, Menu, X, Gavel } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
@@ -26,18 +18,17 @@ export function Header() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    fetchCategories();
+    setCategories([
+      { id: "smartphones", name: "Smartphones", slug: "smartphones" },
+      { id: "laptops", name: "Laptops", slug: "laptops" },
+      { id: "tablets", name: "Tablets", slug: "tablets" },
+      { id: "gaming", name: "Gaming", slug: "gaming" },
+      { id: "audio", name: "Audio", slug: "audio" },
+      { id: "wearables", name: "Wearables", slug: "wearables" },
+      { id: "cameras", name: "Cameras", slug: "cameras" },
+      { id: "electronics", name: "Electronics", slug: "electronics" },
+    ]);
   }, []);
-
-  const fetchCategories = async () => {
-    try {
-      const response = await fetch("http://localhost:4000/categories");
-      const data = await response.json();
-      setCategories(data.slice(0, 10));
-    } catch (error) {
-      console.error("Error fetching categories:", error);
-    }
-  };
 
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
@@ -48,32 +39,14 @@ export function Header() {
 
   return (
     <header className="w-full bg-white border-b border-border sticky top-0 z-50">
-      {/* Top Bar */}
-      <div className="border-b border-border text-xs py-2 px-4 lg:px-8 flex justify-end gap-4 text-muted-foreground">
-        <a href="#" className="hover:text-foreground">
-          The Back Market Promise
-        </a>
-        <a href="#" className="hover:text-foreground">
-          Repair & Care
-        </a>
-        <a href="#" className="hover:text-foreground">
-          End bad tech
-        </a>
-        <a href="#" className="hover:text-foreground">
-          Tech Journal
-        </a>
-        <select className="bg-transparent text-sm">
-          <option>🇺🇸 US</option>
-        </select>
-      </div>
-
       {/* Main Header */}
       <div className="px-4 lg:px-8 py-4">
         <div className="flex items-center justify-between gap-4 mb-4">
           {/* Logo */}
-          <Link to="/" className="flex-shrink-0">
-            <div className="text-xl font-bold text-foreground">
-              🔙 BackMarket
+          <Link to="/" className="flex-shrink-0 flex items-center gap-2">
+            <div className="text-2xl font-bold text-primary">
+              <Gavel size={28} className="inline mr-2" />
+              Bider
             </div>
           </Link>
 
@@ -82,7 +55,7 @@ export function Header() {
             <form onSubmit={handleSearch} className="w-full relative">
               <Input
                 type="text"
-                placeholder="What are you looking for?"
+                placeholder="Search auctions..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 className="pl-4 pr-10 h-10 bg-muted border-0"
@@ -98,49 +71,23 @@ export function Header() {
 
           {/* Right Section */}
           <div className="flex items-center gap-3 ml-auto">
-            {/* Trade-in Button */}
+            {/* Browse Button */}
             <Button
               variant="ghost"
               size="sm"
-              className="hidden lg:flex gap-2 text-sm"
+              className="hidden lg:flex gap-2 text-sm font-medium"
               asChild
             >
-              <a href="#trade-in">
-                <Zap size={16} />
-                Trade-in
-              </a>
+              <Link to="/browse">Browse Auctions</Link>
             </Button>
 
-            {/* Help */}
-            <Button
-              variant="ghost"
-              size="sm"
-              className="hidden lg:flex gap-2 text-sm"
-              asChild
-            >
-              <a href="#help">
-                <HelpCircle size={16} />
-                Need help?
-              </a>
-            </Button>
-
-            {/* Account/Login */}
-            <Button
-              variant="ghost"
-              size="icon"
-              className="hidden lg:flex"
-              asChild
-            >
-              <Link to="#login">👤</Link>
-            </Button>
-
-            {/* Wishlist */}
-            <Button variant="ghost" size="icon">
+            {/* Watchlist */}
+            <Button variant="ghost" size="icon" title="Watchlist">
               <Heart size={20} />
             </Button>
 
-            {/* Cart */}
-            <Button variant="ghost" size="icon">
+            {/* Bids/Cart */}
+            <Button variant="ghost" size="icon" title="My Bids">
               <ShoppingCart size={20} />
             </Button>
 
@@ -156,7 +103,7 @@ export function Header() {
                   <form onSubmit={handleSearch} className="space-y-3">
                     <Input
                       type="text"
-                      placeholder="Search products..."
+                      placeholder="Search auctions..."
                       value={searchQuery}
                       onChange={(e) => setSearchQuery(e.target.value)}
                     />
@@ -189,23 +136,20 @@ export function Header() {
 
         {/* Categories Navigation */}
         <div className="hidden lg:flex gap-6 overflow-x-auto pb-2 -mx-4 px-4">
-          {[
-            "All products",
-            "Smartphones",
-            "Laptops",
-            "Tablets",
-            "Gaming consoles",
-            "Smartwatches",
-            "Audio",
-            "Home appliances",
-            "More",
-          ].map((cat) => (
-            <button
-              key={cat}
+          <Link
+            to="/browse"
+            className="whitespace-nowrap text-sm font-medium text-muted-foreground hover:text-foreground transition-colors"
+          >
+            All Auctions
+          </Link>
+          {categories.slice(0, 7).map((cat) => (
+            <Link
+              key={cat.id}
+              to={`/browse?categoryId=${cat.id}`}
               className="whitespace-nowrap text-sm font-medium text-muted-foreground hover:text-foreground transition-colors"
             >
-              {cat}
-            </button>
+              {cat.name}
+            </Link>
           ))}
         </div>
       </div>
@@ -215,7 +159,7 @@ export function Header() {
         <div className="relative">
           <Input
             type="text"
-            placeholder="What are you looking for?"
+            placeholder="Search auctions..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             className="pl-4 pr-10 h-10 bg-muted border-0"
