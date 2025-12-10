@@ -58,9 +58,10 @@ export default function Home() {
       setLoadingCategories(true);
       setLoadingProducts(true);
 
-      const [categoriesRes, featuredRes, endingSoonRes, newestRes] =
+      const [categoriesRes, startingSoonRes, featuredRes, endingSoonRes, newestRes] =
         await Promise.all([
           fetch("/api/categories"),
+          fetch("/api/products/starting-soon?limit=6"),
           fetch("/api/products/newest?limit=20"),
           fetch("/api/products/ending-soon?limit=20"),
           fetch("/api/products/newest?limit=20"),
@@ -69,6 +70,16 @@ export default function Home() {
       if (categoriesRes.ok) {
         const catData = await categoriesRes.json();
         setCategories(catData.slice(0, 8));
+      }
+
+      if (startingSoonRes.ok) {
+        const data = await startingSoonRes.json();
+        const products = Array.isArray(data) ? data : data.products || [];
+        setStartingSoonProducts(
+          products.length > 0 ? products : mockProducts.slice(0, 6),
+        );
+      } else {
+        setStartingSoonProducts(mockProducts.slice(0, 6));
       }
 
       if (featuredRes.ok) {
@@ -103,6 +114,7 @@ export default function Home() {
     } catch (error) {
       console.error("Error fetching data:", error);
       // Use mock data on error
+      setStartingSoonProducts(mockProducts.slice(0, 6));
       setFeaturedProducts(mockProducts.slice(0, 6));
       setEndingSoonProducts(mockProducts.slice(0, 6));
       setNewestProducts(mockProducts.slice(0, 6));
