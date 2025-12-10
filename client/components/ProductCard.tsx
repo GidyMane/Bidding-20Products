@@ -127,8 +127,8 @@ export function ProductCard({
   };
 
   return (
-    <Link to={`/product/${id}`}>
-      <div className="group bg-white rounded-lg overflow-hidden border border-border hover:shadow-lg transition-all duration-300 h-full flex flex-col">
+    <Link to={`/product/${id}`} className="h-full">
+      <div className="group bg-white rounded-lg overflow-hidden border border-border hover:shadow-xl hover:border-primary/20 transition-all duration-300 h-full flex flex-col">
         {/* Image Container */}
         <div className="relative overflow-hidden bg-muted aspect-square">
           <img
