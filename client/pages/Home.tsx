@@ -19,7 +19,7 @@ export default function Home() {
     })
     .sort(
       (a, b) =>
-        new Date(a.startDate).getTime() - new Date(b.startDate).getTime()
+        new Date(a.startDate).getTime() - new Date(b.startDate).getTime(),
     )
     .slice(0, 3);
 
@@ -30,8 +30,7 @@ export default function Home() {
       return endTime > now && endTime - now <= 2 * 60 * 60 * 1000; // Next 2 hours
     })
     .sort(
-      (a, b) =>
-        new Date(a.endDate).getTime() - new Date(b.endDate).getTime()
+      (a, b) => new Date(a.endDate).getTime() - new Date(b.endDate).getTime(),
     );
 
   const featuredAuctions = mockAuctions
@@ -51,7 +50,7 @@ export default function Home() {
     })
     .sort(
       (a, b) =>
-        new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+        new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime(),
     )
     .slice(0, 12);
 

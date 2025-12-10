@@ -47,7 +47,7 @@ export function ProductCard({
       } else {
         const days = Math.floor(distance / (1000 * 60 * 60 * 24));
         const hours = Math.floor(
-          (distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)
+          (distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60),
         );
         const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
 
@@ -174,7 +174,9 @@ export function ProductCard({
 
           {/* Seller Info */}
           <div className="mt-2 pt-2 border-t border-border">
-            <p className="text-xs text-muted-foreground">Seller: {sellerName}</p>
+            <p className="text-xs text-muted-foreground">
+              Seller: {sellerName}
+            </p>
             <div className="flex items-center gap-1 mt-1">
               <Star size={12} className="fill-yellow-400 text-yellow-400" />
               <span className="text-xs font-medium">{sellerRating}</span>

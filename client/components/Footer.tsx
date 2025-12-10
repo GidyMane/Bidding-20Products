@@ -23,22 +23,34 @@ export function Footer() {
             <h4 className="font-semibold mb-4 text-sm">Browse</h4>
             <ul className="space-y-2 text-sm">
               <li>
-                <a href="/browse" className="opacity-80 hover:opacity-100 transition">
+                <a
+                  href="/browse"
+                  className="opacity-80 hover:opacity-100 transition"
+                >
                   All Auctions
                 </a>
               </li>
               <li>
-                <a href="/browse?sort=endingSoon" className="opacity-80 hover:opacity-100 transition">
+                <a
+                  href="/browse?sort=endingSoon"
+                  className="opacity-80 hover:opacity-100 transition"
+                >
                   Ending Soon
                 </a>
               </li>
               <li>
-                <a href="/browse?sort=newest" className="opacity-80 hover:opacity-100 transition">
+                <a
+                  href="/browse?sort=newest"
+                  className="opacity-80 hover:opacity-100 transition"
+                >
                   Just Added
                 </a>
               </li>
               <li>
-                <a href="/browse?sort=featured" className="opacity-80 hover:opacity-100 transition">
+                <a
+                  href="/browse?sort=featured"
+                  className="opacity-80 hover:opacity-100 transition"
+                >
                   Featured
                 </a>
               </li>
@@ -50,22 +62,34 @@ export function Footer() {
             <h4 className="font-semibold mb-4 text-sm">Categories</h4>
             <ul className="space-y-2 text-sm">
               <li>
-                <a href="/browse?categoryId=smartphones" className="opacity-80 hover:opacity-100 transition">
+                <a
+                  href="/browse?categoryId=smartphones"
+                  className="opacity-80 hover:opacity-100 transition"
+                >
                   Smartphones
                 </a>
               </li>
               <li>
-                <a href="/browse?categoryId=laptops" className="opacity-80 hover:opacity-100 transition">
+                <a
+                  href="/browse?categoryId=laptops"
+                  className="opacity-80 hover:opacity-100 transition"
+                >
                   Laptops
                 </a>
               </li>
               <li>
-                <a href="/browse?categoryId=gaming" className="opacity-80 hover:opacity-100 transition">
+                <a
+                  href="/browse?categoryId=gaming"
+                  className="opacity-80 hover:opacity-100 transition"
+                >
                   Gaming
                 </a>
               </li>
               <li>
-                <a href="/browse?categoryId=audio" className="opacity-80 hover:opacity-100 transition">
+                <a
+                  href="/browse?categoryId=audio"
+                  className="opacity-80 hover:opacity-100 transition"
+                >
                   Audio
                 </a>
               </li>
@@ -77,22 +101,34 @@ export function Footer() {
             <h4 className="font-semibold mb-4 text-sm">Support</h4>
             <ul className="space-y-2 text-sm">
               <li>
-                <a href="#help" className="opacity-80 hover:opacity-100 transition">
+                <a
+                  href="#help"
+                  className="opacity-80 hover:opacity-100 transition"
+                >
                   Help Center
                 </a>
               </li>
               <li>
-                <a href="#contact" className="opacity-80 hover:opacity-100 transition">
+                <a
+                  href="#contact"
+                  className="opacity-80 hover:opacity-100 transition"
+                >
                   Contact Us
                 </a>
               </li>
               <li>
-                <a href="#faq" className="opacity-80 hover:opacity-100 transition">
+                <a
+                  href="#faq"
+                  className="opacity-80 hover:opacity-100 transition"
+                >
                   FAQ
                 </a>
               </li>
               <li>
-                <a href="#safety" className="opacity-80 hover:opacity-100 transition">
+                <a
+                  href="#safety"
+                  className="opacity-80 hover:opacity-100 transition"
+                >
                   Safety Tips
                 </a>
               </li>
@@ -104,22 +140,34 @@ export function Footer() {
             <h4 className="font-semibold mb-4 text-sm">Legal</h4>
             <ul className="space-y-2 text-sm">
               <li>
-                <a href="#terms" className="opacity-80 hover:opacity-100 transition">
+                <a
+                  href="#terms"
+                  className="opacity-80 hover:opacity-100 transition"
+                >
                   Terms of Service
                 </a>
               </li>
               <li>
-                <a href="#privacy" className="opacity-80 hover:opacity-100 transition">
+                <a
+                  href="#privacy"
+                  className="opacity-80 hover:opacity-100 transition"
+                >
                   Privacy Policy
                 </a>
               </li>
               <li>
-                <a href="#cookies" className="opacity-80 hover:opacity-100 transition">
+                <a
+                  href="#cookies"
+                  className="opacity-80 hover:opacity-100 transition"
+                >
                   Cookie Policy
                 </a>
               </li>
               <li>
-                <a href="#accessibility" className="opacity-80 hover:opacity-100 transition">
+                <a
+                  href="#accessibility"
+                  className="opacity-80 hover:opacity-100 transition"
+                >
                   Accessibility
                 </a>
               </li>

@@ -12,11 +12,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import {
-  Sheet,
-  SheetContent,
-  SheetTrigger,
-} from "@/components/ui/sheet";
+import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Slider } from "@/components/ui/slider";
 import { Filter, X } from "lucide-react";
@@ -26,13 +22,13 @@ import { mockAuctions, mockCategories } from "@/lib/mockAuctions";
 export default function Browse() {
   const [searchParams, setSearchParams] = useSearchParams();
   const [searchQuery, setSearchQuery] = useState(
-    searchParams.get("query") || ""
+    searchParams.get("query") || "",
   );
   const [selectedCategory, setSelectedCategory] = useState(
-    searchParams.get("categoryId") || ""
+    searchParams.get("categoryId") || "",
   );
   const [selectedConditions, setSelectedConditions] = useState<string[]>(
-    searchParams.get("condition")?.split(",").filter(Boolean) || []
+    searchParams.get("condition")?.split(",").filter(Boolean) || [],
   );
   const [priceRange, setPriceRange] = useState<[number, number]>([
     parseInt(searchParams.get("minPrice") || "0"),
@@ -80,10 +76,7 @@ export default function Browse() {
       // Filter by price range
       const displayPrice =
         auction.currentBid > 0 ? auction.currentBid : auction.startingPrice;
-      if (
-        displayPrice < priceRange[0] ||
-        displayPrice > priceRange[1]
-      ) {
+      if (displayPrice < priceRange[0] || displayPrice > priceRange[1]) {
         return false;
       }
 
@@ -94,27 +87,22 @@ export default function Browse() {
     if (sortBy === "newest") {
       results.sort(
         (a, b) =>
-          new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+          new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime(),
       );
     } else if (sortBy === "endingSoon") {
       results.sort(
-        (a, b) =>
-          new Date(a.endDate).getTime() - new Date(b.endDate).getTime()
+        (a, b) => new Date(a.endDate).getTime() - new Date(b.endDate).getTime(),
       );
     } else if (sortBy === "lowest") {
       results.sort((a, b) => {
-        const priceA =
-          a.currentBid > 0 ? a.currentBid : a.startingPrice;
-        const priceB =
-          b.currentBid > 0 ? b.currentBid : b.startingPrice;
+        const priceA = a.currentBid > 0 ? a.currentBid : a.startingPrice;
+        const priceB = b.currentBid > 0 ? b.currentBid : b.startingPrice;
         return priceA - priceB;
       });
     } else if (sortBy === "highest") {
       results.sort((a, b) => {
-        const priceA =
-          a.currentBid > 0 ? a.currentBid : a.startingPrice;
-        const priceB =
-          b.currentBid > 0 ? b.currentBid : b.startingPrice;
+        const priceA = a.currentBid > 0 ? a.currentBid : a.startingPrice;
+        const priceB = b.currentBid > 0 ? b.currentBid : b.startingPrice;
         return priceB - priceA;
       });
     } else if (sortBy === "mostBids") {
@@ -128,7 +116,7 @@ export default function Browse() {
     setSelectedConditions((prev) =>
       prev.includes(condition)
         ? prev.filter((c) => c !== condition)
-        : [...prev, condition]
+        : [...prev, condition],
     );
   };
 
@@ -204,9 +192,7 @@ export default function Browse() {
         </h3>
         <Slider
           value={priceRange}
-          onValueChange={(value) =>
-            setPriceRange(value as [number, number])
-          }
+          onValueChange={(value) => setPriceRange(value as [number, number])}
           min={0}
           max={3000}
           step={50}
@@ -256,7 +242,10 @@ export default function Browse() {
             </Select>
 
             {/* Mobile Filter Toggle */}
-            <Sheet open={isMobileFilterOpen} onOpenChange={setIsMobileFilterOpen}>
+            <Sheet
+              open={isMobileFilterOpen}
+              onOpenChange={setIsMobileFilterOpen}
+            >
               <SheetTrigger asChild className="lg:hidden">
                 <Button variant="outline" size="icon">
                   <Filter size={20} />
@@ -283,11 +272,7 @@ export default function Browse() {
           <div className="lg:col-span-3">
             {filteredAuctions.length > 0 ? (
               <div>
-                <Carousel
-                  itemsPerView={3}
-                  gap={24}
-                  showArrows={true}
-                >
+                <Carousel itemsPerView={3} gap={24} showArrows={true}>
                   {filteredAuctions.map((auction) => (
                     <ProductCard
                       key={auction.id}

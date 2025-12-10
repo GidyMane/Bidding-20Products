@@ -26,16 +26,20 @@ export interface AuctionProduct {
 const now = new Date();
 
 // Helper to create dates
-const inHours = (hours: number) => new Date(now.getTime() + hours * 60 * 60 * 1000).toISOString();
-const inMinutes = (minutes: number) => new Date(now.getTime() + minutes * 60 * 1000).toISOString();
-const agoHours = (hours: number) => new Date(now.getTime() - hours * 60 * 60 * 1000).toISOString();
+const inHours = (hours: number) =>
+  new Date(now.getTime() + hours * 60 * 60 * 1000).toISOString();
+const inMinutes = (minutes: number) =>
+  new Date(now.getTime() + minutes * 60 * 1000).toISOString();
+const agoHours = (hours: number) =>
+  new Date(now.getTime() - hours * 60 * 60 * 1000).toISOString();
 
 export const mockAuctions: AuctionProduct[] = [
   // STARTING SOON (Hero Carousel)
   {
     id: "auction-1",
-    title: "MacBook Pro 16\" M2 Max - Space Gray - 32GB RAM",
-    description: "Pristine condition MacBook Pro with latest specs. Never used.",
+    title: 'MacBook Pro 16" M2 Max - Space Gray - 32GB RAM',
+    description:
+      "Pristine condition MacBook Pro with latest specs. Never used.",
     categoryId: "laptops",
     condition: "NEW",
     images: [
@@ -307,7 +311,7 @@ export const mockAuctions: AuctionProduct[] = [
     reviewCount: 289,
     specifications: {
       Megapixels: "20.1MP",
-      "Video": "8K Recording",
+      Video: "8K Recording",
       "ISO Range": "100-102400",
     },
     isActive: true,
@@ -367,8 +371,8 @@ export const mockAuctions: AuctionProduct[] = [
     reviewCount: 312,
     specifications: {
       "Video Resolution": "5.3K60",
-      "Waterproof": "33ft",
-      "Stabilization": "HyperSmooth 6.0",
+      Waterproof: "33ft",
+      Stabilization: "HyperSmooth 6.0",
     },
     isActive: true,
     createdAt: agoHours(1.5),
