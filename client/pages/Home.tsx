@@ -42,6 +42,7 @@ interface Category {
 export default function Home() {
   const navigate = useNavigate();
   const [categories, setCategories] = useState<Category[]>([]);
+  const [startingSoonProducts, setStartingSoonProducts] = useState<Product[]>([]);
   const [featuredProducts, setFeaturedProducts] = useState<Product[]>([]);
   const [endingSoonProducts, setEndingSoonProducts] = useState<Product[]>([]);
   const [newestProducts, setNewestProducts] = useState<Product[]>([]);
