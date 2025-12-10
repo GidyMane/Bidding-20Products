@@ -93,7 +93,7 @@ export function ProductCard({
     return () => clearInterval(interval);
   }, [endDate, reservePrice, currentBid]);
 
-  const conditionConfig = {
+  const conditionConfig: Record<string, { label: string; color: string }> = {
     NEW: { label: "New", color: "bg-green-100 text-green-800" },
     LIKE_NEW: { label: "Like New", color: "bg-blue-100 text-blue-800" },
     GOOD: { label: "Good", color: "bg-cyan-100 text-cyan-800" },
@@ -101,7 +101,7 @@ export function ProductCard({
     POOR: { label: "Poor", color: "bg-orange-100 text-orange-800" },
   };
 
-  const conditionInfo = condition ? conditionConfig[condition] : conditionConfig.GOOD;
+  const conditionInfo = (condition && conditionConfig[condition]) || conditionConfig.GOOD;
   const imageUrl = images?.[0] || "/placeholder.svg";
 
   // Use current bid if available, otherwise starting price
