@@ -137,73 +137,8 @@ export default function Home() {
 
   return (
     <Layout>
-      {/* Hero Section - BackMarket Style */}
-      <section className="bg-primary text-foreground">
-        <div className="max-w-7xl mx-auto px-4 lg:px-8 py-12 lg:py-20">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-center">
-            {/* Left: Text Content */}
-            <div className="flex flex-col justify-center">
-              <h1 className="font-serif text-4xl lg:text-5xl font-bold mb-4 leading-tight">
-                Just as procrastinatey
-              </h1>
-              <h2 className="font-serif text-4xl lg:text-5xl font-bold mb-6 leading-tight italic">
-                as the new one.
-              </h2>
-              <p className="text-lg mb-8 text-foreground/80">
-                The MacBook Air M1, for up to 70% less than new.
-              </p>
-              <div className="flex flex-col sm:flex-row gap-4">
-                <Button
-                  size="lg"
-                  className="bg-foreground text-primary hover:bg-foreground/90 font-semibold"
-                  onClick={() => navigate("/browse")}
-                >
-                  Don't wait
-                </Button>
-              </div>
-            </div>
-
-            {/* Right: Product Image */}
-            <div className="flex justify-center items-center">
-              <img
-                src="https://images.unsplash.com/photo-1517336714731-489689fd1ca8?w=600&h=400&fit=crop"
-                alt="MacBook Air M1"
-                className="w-full max-w-md h-auto"
-              />
-            </div>
-          </div>
-
-          {/* Carousel Indicators */}
-          <div className="flex justify-between items-center mt-12">
-            <div className="flex gap-2">
-              {[0, 1, 2].map((i) => (
-                <div
-                  key={i}
-                  className={`h-2 rounded-full transition-all ${
-                    i === 0 ? "w-8 bg-foreground" : "w-2 bg-foreground/40"
-                  }`}
-                />
-              ))}
-            </div>
-            <div className="flex gap-2">
-              <Button
-                variant="ghost"
-                size="icon"
-                className="rounded-full bg-foreground text-primary"
-              >
-                <ChevronLeft size={20} />
-              </Button>
-              <Button
-                variant="ghost"
-                size="icon"
-                className="rounded-full bg-foreground text-primary"
-              >
-                <ChevronRight size={20} />
-              </Button>
-            </div>
-          </div>
-        </div>
-      </section>
+      {/* Hero Section - Auctions Starting Soon */}
+      <HeroCarousel products={startingSoonProducts} loading={loadingProducts} />
 
       {/* Trust Section */}
       <section className="bg-white py-8 lg:py-12 border-b border-border">
