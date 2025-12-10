@@ -3,7 +3,7 @@ export interface MockProduct {
   title: string;
   description: string;
   categoryId: string;
-  condition: "NEW" | "LIKE_NEW" | "GOOD" | "FAIR" | "POOR";
+  condition: "NEW" | "LIKE_NEW" | "GOOD" | "FAIR" | "POOR" | "EXCELLENT";
   images: string[];
   startingPrice: number;
   currentBid?: number;
