@@ -58,10 +58,10 @@ export default function Home() {
 
       const [categoriesRes, featuredRes, endingSoonRes, newestRes] =
         await Promise.all([
-          fetch("http://localhost:4000/categories"),
-          fetch("http://localhost:4000/products/newest?limit=20"),
-          fetch("http://localhost:4000/products/ending-soon?limit=20"),
-          fetch("http://localhost:4000/products/newest?limit=20"),
+          fetch("/api/categories"),
+          fetch("/api/products/newest?limit=20"),
+          fetch("/api/products/ending-soon?limit=20"),
+          fetch("/api/products/newest?limit=20"),
         ]);
 
       if (categoriesRes.ok) {
