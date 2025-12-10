@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { Layout } from "@/components/Layout";
 import { ProductCard } from "@/components/ProductCard";
 import { Carousel } from "@/components/Carousel";
+import { HeroCarousel } from "@/components/HeroCarousel";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 import { ChevronRight, ChevronLeft, ChevronRight as Arrow } from "lucide-react";
