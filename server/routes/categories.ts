@@ -10,11 +10,26 @@ interface Category {
 
 const categories: Category[] = [
   { id: "electronics", name: "Electronics", slug: "electronics" },
-  { id: "smartphones", name: "Smartphones", slug: "smartphones", parent: "electronics" },
+  {
+    id: "smartphones",
+    name: "Smartphones",
+    slug: "smartphones",
+    parent: "electronics",
+  },
   { id: "laptops", name: "Laptops", slug: "laptops", parent: "electronics" },
   { id: "tablets", name: "Tablets", slug: "tablets", parent: "electronics" },
-  { id: "smartwatches", name: "Smart Watches", slug: "smartwatches", parent: "electronics" },
-  { id: "audio", name: "Audio & Headphones", slug: "audio", parent: "electronics" },
+  {
+    id: "smartwatches",
+    name: "Smart Watches",
+    slug: "smartwatches",
+    parent: "electronics",
+  },
+  {
+    id: "audio",
+    name: "Audio & Headphones",
+    slug: "audio",
+    parent: "electronics",
+  },
   { id: "gaming", name: "Gaming", slug: "gaming" },
   { id: "cameras", name: "Cameras", slug: "cameras", parent: "electronics" },
   { id: "accessories", name: "Accessories", slug: "accessories" },

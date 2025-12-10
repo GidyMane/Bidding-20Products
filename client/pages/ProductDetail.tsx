@@ -59,7 +59,9 @@ export default function ProductDetail() {
         setIsEnded(true);
       } else {
         const days = Math.floor(distance / (1000 * 60 * 60 * 24));
-        const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        const hours = Math.floor(
+          (distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60),
+        );
         const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
         const seconds = Math.floor((distance % (1000 * 60)) / 1000);
 
@@ -227,13 +229,17 @@ export default function ProductDetail() {
           <div>
             {/* Condition Badge */}
             <div className="mb-4">
-              <Badge className={`${conditionInfo.color} border-none text-xs font-medium`}>
+              <Badge
+                className={`${conditionInfo.color} border-none text-xs font-medium`}
+              >
                 {conditionInfo.label}
               </Badge>
             </div>
 
             {/* Title */}
-            <h1 className="text-3xl font-bold mb-4 leading-tight">{product.title}</h1>
+            <h1 className="text-3xl font-bold mb-4 leading-tight">
+              {product.title}
+            </h1>
 
             {/* Rating */}
             {product.rating > 0 && (
@@ -259,7 +265,9 @@ export default function ProductDetail() {
 
             {/* Countdown Timer */}
             <div className="bg-gradient-to-r from-primary to-accent text-white p-4 rounded-lg mb-6">
-              <p className="text-xs uppercase tracking-wide mb-1 opacity-90">Time Remaining</p>
+              <p className="text-xs uppercase tracking-wide mb-1 opacity-90">
+                Time Remaining
+              </p>
               <p className="text-2xl font-bold">{timeLeft}</p>
             </div>
 
@@ -274,22 +282,27 @@ export default function ProductDetail() {
 
               {product.bidsCount && product.bidsCount > 0 && (
                 <p className="text-sm text-muted-foreground mb-4">
-                  {product.bidsCount} bid{product.bidsCount !== 1 ? "s" : ""} placed
+                  {product.bidsCount} bid{product.bidsCount !== 1 ? "s" : ""}{" "}
+                  placed
                 </p>
               )}
 
-              {product.reservePrice && product.currentBid && product.currentBid < product.reservePrice && (
-                <div className="flex items-center gap-2 text-sm text-orange-600 mb-4">
-                  <AlertCircle size={16} />
-                  <span>Reserve price not met</span>
-                </div>
-              )}
+              {product.reservePrice &&
+                product.currentBid &&
+                product.currentBid < product.reservePrice && (
+                  <div className="flex items-center gap-2 text-sm text-orange-600 mb-4">
+                    <AlertCircle size={16} />
+                    <span>Reserve price not met</span>
+                  </div>
+                )}
 
-              {product.startingPrice && product.currentBid && product.currentBid > product.startingPrice && (
-                <p className="text-xs text-muted-foreground line-through">
-                  Started at {formatPrice(product.startingPrice)}
-                </p>
-              )}
+              {product.startingPrice &&
+                product.currentBid &&
+                product.currentBid > product.startingPrice && (
+                  <p className="text-xs text-muted-foreground line-through">
+                    Started at {formatPrice(product.startingPrice)}
+                  </p>
+                )}
             </div>
 
             {/* Bid Input */}
@@ -365,24 +378,31 @@ export default function ProductDetail() {
           {product.description && (
             <div className="lg:col-span-2">
               <h2 className="text-xl font-bold mb-4">About this item</h2>
-              <p className="text-muted-foreground leading-relaxed">{product.description}</p>
+              <p className="text-muted-foreground leading-relaxed">
+                {product.description}
+              </p>
             </div>
           )}
 
           {/* Specifications */}
-          {product.specifications && Object.keys(product.specifications).length > 0 && (
-            <div className="border border-border rounded-lg p-6">
-              <h2 className="text-lg font-bold mb-4">Specifications</h2>
-              <div className="space-y-3">
-                {Object.entries(product.specifications).map(([key, value]) => (
-                  <div key={key} className="flex justify-between text-sm">
-                    <span className="text-muted-foreground font-medium">{key}</span>
-                    <span className="font-semibold">{String(value)}</span>
-                  </div>
-                ))}
+          {product.specifications &&
+            Object.keys(product.specifications).length > 0 && (
+              <div className="border border-border rounded-lg p-6">
+                <h2 className="text-lg font-bold mb-4">Specifications</h2>
+                <div className="space-y-3">
+                  {Object.entries(product.specifications).map(
+                    ([key, value]) => (
+                      <div key={key} className="flex justify-between text-sm">
+                        <span className="text-muted-foreground font-medium">
+                          {key}
+                        </span>
+                        <span className="font-semibold">{String(value)}</span>
+                      </div>
+                    ),
+                  )}
+                </div>
               </div>
-            </div>
-          )}
+            )}
         </div>
       </div>
     </Layout>

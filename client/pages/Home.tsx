@@ -42,7 +42,9 @@ interface Category {
 export default function Home() {
   const navigate = useNavigate();
   const [categories, setCategories] = useState<Category[]>([]);
-  const [startingSoonProducts, setStartingSoonProducts] = useState<Product[]>([]);
+  const [startingSoonProducts, setStartingSoonProducts] = useState<Product[]>(
+    [],
+  );
   const [featuredProducts, setFeaturedProducts] = useState<Product[]>([]);
   const [endingSoonProducts, setEndingSoonProducts] = useState<Product[]>([]);
   const [newestProducts, setNewestProducts] = useState<Product[]>([]);
@@ -58,14 +60,19 @@ export default function Home() {
       setLoadingCategories(true);
       setLoadingProducts(true);
 
-      const [categoriesRes, startingSoonRes, featuredRes, endingSoonRes, newestRes] =
-        await Promise.all([
-          fetch("/api/categories"),
-          fetch("/api/products/starting-soon?limit=6"),
-          fetch("/api/products/newest?limit=20"),
-          fetch("/api/products/ending-soon?limit=20"),
-          fetch("/api/products/newest?limit=20"),
-        ]);
+      const [
+        categoriesRes,
+        startingSoonRes,
+        featuredRes,
+        endingSoonRes,
+        newestRes,
+      ] = await Promise.all([
+        fetch("/api/categories"),
+        fetch("/api/products/starting-soon?limit=6"),
+        fetch("/api/products/newest?limit=20"),
+        fetch("/api/products/ending-soon?limit=20"),
+        fetch("/api/products/newest?limit=20"),
+      ]);
 
       if (categoriesRes.ok) {
         const catData = await categoriesRes.json();
@@ -145,8 +152,12 @@ export default function Home() {
         <div className="max-w-7xl mx-auto px-4 lg:px-8">
           <div className="flex items-center justify-between mb-8">
             <div>
-              <h2 className="text-2xl lg:text-3xl font-bold">Featured Auctions</h2>
-              <p className="text-muted-foreground text-sm mt-1">Curated items ending soon</p>
+              <h2 className="text-2xl lg:text-3xl font-bold">
+                Featured Auctions
+              </h2>
+              <p className="text-muted-foreground text-sm mt-1">
+                Curated items ending soon
+              </p>
             </div>
             <Button
               variant="ghost"
@@ -182,7 +193,9 @@ export default function Home() {
           <div className="flex items-center justify-between mb-8">
             <div>
               <h2 className="text-2xl lg:text-3xl font-bold">Ending Soon</h2>
-              <p className="text-muted-foreground text-sm mt-1">Don't miss these deals</p>
+              <p className="text-muted-foreground text-sm mt-1">
+                Don't miss these deals
+              </p>
             </div>
             <Button
               variant="ghost"
@@ -218,7 +231,9 @@ export default function Home() {
           <div className="flex items-center justify-between mb-8">
             <div>
               <h2 className="text-2xl lg:text-3xl font-bold">Just Added</h2>
-              <p className="text-muted-foreground text-sm mt-1">Latest auctions</p>
+              <p className="text-muted-foreground text-sm mt-1">
+                Latest auctions
+              </p>
             </div>
             <Button
               variant="ghost"

@@ -116,7 +116,8 @@ export default function Browse() {
       if (selectedCategory) params.append("categoryId", selectedCategory);
       if (selectedConditions.length > 0)
         params.append("condition", selectedConditions[0]);
-      if (priceRange[0] > 0) params.append("minPrice", priceRange[0].toString());
+      if (priceRange[0] > 0)
+        params.append("minPrice", priceRange[0].toString());
       if (priceRange[1] < 10000)
         params.append("maxPrice", priceRange[1].toString());
       params.append("sortBy", sortBy);

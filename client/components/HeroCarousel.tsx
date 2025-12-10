@@ -46,8 +46,12 @@ export function HeroCarousel({ products, loading = false }: HeroCarouselProps) {
           newTimeLeft[product.id] = "Starting now";
         } else {
           const days = Math.floor(distance / (1000 * 60 * 60 * 24));
-          const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-          const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+          const hours = Math.floor(
+            (distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60),
+          );
+          const minutes = Math.floor(
+            (distance % (1000 * 60 * 60)) / (1000 * 60),
+          );
 
           if (days > 0) {
             newTimeLeft[product.id] = `${days}d ${hours}h`;
