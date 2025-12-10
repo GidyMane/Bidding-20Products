@@ -10,6 +10,7 @@ export interface MockProduct {
   bidsCount?: number;
   reservePrice?: number;
   buyNowPrice?: number;
+  startDate: string;
   endDate: string;
   sellerId: string;
   sellerName: string;
