@@ -1,4 +1,4 @@
-export interface MockProduct {
+export interface Product {
   id: string;
   title: string;
   description: string;
@@ -25,7 +25,7 @@ export interface MockProduct {
 
 const now = new Date();
 
-export const mockProducts: MockProduct[] = [
+export const mockProducts: Product[] = [
   {
     id: "1",
     title: "iPhone 14 - Unlocked - Purple - 128 GB",

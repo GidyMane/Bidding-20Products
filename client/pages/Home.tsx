@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { Layout } from "@/components/Layout";
 import { ProductCard } from "@/components/ProductCard";
 import { Carousel } from "@/components/Carousel";
+import { HeroCarousel } from "@/components/HeroCarousel";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 import { ChevronRight, ChevronLeft, ChevronRight as Arrow } from "lucide-react";
@@ -12,13 +13,14 @@ interface Product {
   id: string;
   title: string;
   description?: string;
-  condition: "NEW" | "LIKE_NEW" | "GOOD" | "FAIR" | "POOR";
+  condition: "NEW" | "LIKE_NEW" | "GOOD" | "FAIR" | "POOR" | "EXCELLENT";
   images: string[];
   startingPrice: number;
   currentBid?: number;
   bidsCount?: number;
   reservePrice?: number;
   buyNowPrice?: number;
+  startDate: string;
   endDate: string;
   sellerId: string;
   sellerName: string;
@@ -40,6 +42,9 @@ interface Category {
 export default function Home() {
   const navigate = useNavigate();
   const [categories, setCategories] = useState<Category[]>([]);
+  const [startingSoonProducts, setStartingSoonProducts] = useState<Product[]>(
+    [],
+  );
   const [featuredProducts, setFeaturedProducts] = useState<Product[]>([]);
   const [endingSoonProducts, setEndingSoonProducts] = useState<Product[]>([]);
   const [newestProducts, setNewestProducts] = useState<Product[]>([]);
@@ -55,17 +60,33 @@ export default function Home() {
       setLoadingCategories(true);
       setLoadingProducts(true);
 
-      const [categoriesRes, featuredRes, endingSoonRes, newestRes] =
-        await Promise.all([
-          fetch("http://localhost:4000/categories"),
-          fetch("http://localhost:4000/products/newest?limit=20"),
-          fetch("http://localhost:4000/products/ending-soon?limit=20"),
-          fetch("http://localhost:4000/products/newest?limit=20"),
-        ]);
+      const [
+        categoriesRes,
+        startingSoonRes,
+        featuredRes,
+        endingSoonRes,
+        newestRes,
+      ] = await Promise.all([
+        fetch("/api/categories"),
+        fetch("/api/products/starting-soon?limit=6"),
+        fetch("/api/products/newest?limit=20"),
+        fetch("/api/products/ending-soon?limit=20"),
+        fetch("/api/products/newest?limit=20"),
+      ]);
 
       if (categoriesRes.ok) {
         const catData = await categoriesRes.json();
         setCategories(catData.slice(0, 8));
+      }
+
+      if (startingSoonRes.ok) {
+        const data = await startingSoonRes.json();
+        const products = Array.isArray(data) ? data : data.products || [];
+        setStartingSoonProducts(
+          products.length > 0 ? products : mockProducts.slice(0, 6),
+        );
+      } else {
+        setStartingSoonProducts(mockProducts.slice(0, 6));
       }
 
       if (featuredRes.ok) {
@@ -100,6 +121,7 @@ export default function Home() {
     } catch (error) {
       console.error("Error fetching data:", error);
       // Use mock data on error
+      setStartingSoonProducts(mockProducts.slice(0, 6));
       setFeaturedProducts(mockProducts.slice(0, 6));
       setEndingSoonProducts(mockProducts.slice(0, 6));
       setNewestProducts(mockProducts.slice(0, 6));
@@ -122,125 +144,27 @@ export default function Home() {
 
   return (
     <Layout>
-      {/* Hero Section - BackMarket Style */}
-      <section className="bg-primary text-foreground">
-        <div className="max-w-7xl mx-auto px-4 lg:px-8 py-12 lg:py-20">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-center">
-            {/* Left: Text Content */}
-            <div className="flex flex-col justify-center">
-              <h1 className="font-serif text-4xl lg:text-5xl font-bold mb-4 leading-tight">
-                Just as procrastinatey
-              </h1>
-              <h2 className="font-serif text-4xl lg:text-5xl font-bold mb-6 leading-tight italic">
-                as the new one.
-              </h2>
-              <p className="text-lg mb-8 text-foreground/80">
-                The MacBook Air M1, for up to 70% less than new.
-              </p>
-              <div className="flex flex-col sm:flex-row gap-4">
-                <Button
-                  size="lg"
-                  className="bg-foreground text-primary hover:bg-foreground/90 font-semibold"
-                  onClick={() => navigate("/browse")}
-                >
-                  Don't wait
-                </Button>
-              </div>
-            </div>
+      {/* Hero Section - Auctions Starting Soon */}
+      <HeroCarousel products={startingSoonProducts} loading={loadingProducts} />
 
-            {/* Right: Product Image */}
-            <div className="flex justify-center items-center">
-              <img
-                src="https://images.unsplash.com/photo-1517336714731-489689fd1ca8?w=600&h=400&fit=crop"
-                alt="MacBook Air M1"
-                className="w-full max-w-md h-auto"
-              />
-            </div>
-          </div>
-
-          {/* Carousel Indicators */}
-          <div className="flex justify-between items-center mt-12">
-            <div className="flex gap-2">
-              {[0, 1, 2].map((i) => (
-                <div
-                  key={i}
-                  className={`h-2 rounded-full transition-all ${
-                    i === 0 ? "w-8 bg-foreground" : "w-2 bg-foreground/40"
-                  }`}
-                />
-              ))}
-            </div>
-            <div className="flex gap-2">
-              <Button
-                variant="ghost"
-                size="icon"
-                className="rounded-full bg-foreground text-primary"
-              >
-                <ChevronLeft size={20} />
-              </Button>
-              <Button
-                variant="ghost"
-                size="icon"
-                className="rounded-full bg-foreground text-primary"
-              >
-                <ChevronRight size={20} />
-              </Button>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Trust Section */}
-      <section className="bg-white py-8 lg:py-12 border-b border-border">
-        <div className="max-w-7xl mx-auto px-4 lg:px-8">
-          <h2 className="text-center font-serif text-3xl font-bold mb-12">
-            Where the world shops refurbished tech.
-          </h2>
-          <p className="text-center text-muted-foreground mb-12">
-            Everything you love about new, for less.{" "}
-            <a href="#" className="underline text-foreground font-semibold">
-              Guaranteed by the Back Market Promise.
-            </a>
-          </p>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-            <div className="text-center">
-              <div className="text-3xl mb-2">⭐</div>
-              <p className="font-semibold text-sm">
-                Best-in-class refurbishment
-              </p>
-            </div>
-            <div className="text-center">
-              <div className="text-3xl mb-2">🔍</div>
-              <p className="font-semibold text-sm">
-                Up to 100-point quality inspection
-              </p>
-            </div>
-            <div className="text-center">
-              <div className="text-3xl mb-2">📦</div>
-              <p className="font-semibold text-sm">Free returns until Jan 31</p>
-            </div>
-            <div className="text-center">
-              <div className="text-3xl mb-2">🛡️</div>
-              <p className="font-semibold text-sm">1-year warranty</p>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Recommended for You Section */}
+      {/* Featured Products - Carousel Section */}
       <section className="py-12 lg:py-16">
         <div className="max-w-7xl mx-auto px-4 lg:px-8">
           <div className="flex items-center justify-between mb-8">
-            <h2 className="text-2xl lg:text-3xl font-bold">
-              Recommended for you
-            </h2>
+            <div>
+              <h2 className="text-2xl lg:text-3xl font-bold">
+                Featured Auctions
+              </h2>
+              <p className="text-muted-foreground text-sm mt-1">
+                Curated items ending soon
+              </p>
+            </div>
             <Button
               variant="ghost"
-              onClick={() => navigate("/browse")}
+              onClick={() => navigate("/browse?sortBy=newest")}
               className="text-primary hover:text-primary/80"
             >
-              See all
+              View all
               <Arrow className="ml-2 h-4 w-4" />
             </Button>
           </div>
@@ -263,62 +187,22 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Shop Our Most Wanted */}
-      <section className="py-12 lg:py-16 bg-muted/30">
-        <div className="max-w-7xl mx-auto px-4 lg:px-8">
-          <div className="flex items-center justify-between mb-8">
-            <h2 className="text-2xl lg:text-3xl font-bold">
-              Shop our most wanted
-            </h2>
-            <Button
-              variant="ghost"
-              onClick={() => navigate("/browse?sortBy=newest")}
-              className="text-primary hover:text-primary/80"
-            >
-              See all
-              <Arrow className="ml-2 h-4 w-4" />
-            </Button>
-          </div>
-
-          {loadingProducts ? (
-            <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-4 gap-4">
-              {[...Array(4)].map((_, i) => (
-                <div key={i} className="rounded-lg overflow-hidden">
-                  <Skeleton className="aspect-square" />
-                </div>
-              ))}
-            </div>
-          ) : endingSoonProducts.length > 0 ? (
-            <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-4 gap-4 lg:gap-6">
-              {endingSoonProducts.slice(0, 4).map((product) => (
-                <div
-                  key={product.id}
-                  className="rounded-lg overflow-hidden bg-primary p-4 flex items-center justify-center min-h-48"
-                >
-                  <div className="text-center text-white">
-                    <p className="text-3xl mb-2">📱</p>
-                    <p className="font-semibold">
-                      {product.title.split(" ").slice(0, 2).join(" ")}
-                    </p>
-                  </div>
-                </div>
-              ))}
-            </div>
-          ) : null}
-        </div>
-      </section>
-
       {/* Ending Soon - Carousel Section */}
-      <section className="py-12 lg:py-16">
+      <section className="py-12 lg:py-16 bg-muted/40">
         <div className="max-w-7xl mx-auto px-4 lg:px-8">
           <div className="flex items-center justify-between mb-8">
-            <h2 className="text-2xl lg:text-3xl font-bold">Ending soon</h2>
+            <div>
+              <h2 className="text-2xl lg:text-3xl font-bold">Ending Soon</h2>
+              <p className="text-muted-foreground text-sm mt-1">
+                Don't miss these deals
+              </p>
+            </div>
             <Button
               variant="ghost"
               onClick={() => navigate("/browse?sortBy=endDate")}
               className="text-primary hover:text-primary/80"
             >
-              See all
+              View all
               <Arrow className="ml-2 h-4 w-4" />
             </Button>
           </div>
@@ -341,21 +225,103 @@ export default function Home() {
         </div>
       </section>
 
-      {/* CTA Section */}
+      {/* Newest Listings - Carousel Section */}
+      <section className="py-12 lg:py-16">
+        <div className="max-w-7xl mx-auto px-4 lg:px-8">
+          <div className="flex items-center justify-between mb-8">
+            <div>
+              <h2 className="text-2xl lg:text-3xl font-bold">Just Added</h2>
+              <p className="text-muted-foreground text-sm mt-1">
+                Latest auctions
+              </p>
+            </div>
+            <Button
+              variant="ghost"
+              onClick={() => navigate("/browse?sortBy=newest")}
+              className="text-primary hover:text-primary/80"
+            >
+              View all
+              <Arrow className="ml-2 h-4 w-4" />
+            </Button>
+          </div>
+
+          {loadingProducts ? (
+            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 lg:gap-6">
+              {[...Array(8)].map((_, i) => (
+                <ProductCardSkeleton key={i} />
+              ))}
+            </div>
+          ) : newestProducts.length > 0 ? (
+            <div className="mx-auto">
+              <Carousel itemsPerView={4} gap={16} showArrows={true}>
+                {newestProducts.slice(0, 12).map((product) => (
+                  <ProductCard key={product.id} {...product} />
+                ))}
+              </Carousel>
+            </div>
+          ) : null}
+        </div>
+      </section>
+
+      {/* Trust/Info Section */}
       <section className="bg-secondary text-secondary-foreground py-12 lg:py-16">
-        <div className="max-w-4xl mx-auto px-4 lg:px-8 text-center">
+        <div className="max-w-7xl mx-auto px-4 lg:px-8">
+          <div className="text-center mb-12">
+            <h2 className="font-serif text-3xl lg:text-4xl font-bold mb-4">
+              The modern way to auction
+            </h2>
+            <p className="text-lg opacity-90">
+              Fair pricing, transparent bidding, verified sellers
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <div className="text-center">
+              <div className="inline-flex items-center justify-center w-14 h-14 bg-secondary-foreground/10 rounded-lg mb-4">
+                <span className="text-2xl">🎯</span>
+              </div>
+              <h3 className="font-semibold text-lg mb-2">Fair Auctions</h3>
+              <p className="text-sm opacity-80">
+                Open bidding ensures competitive prices
+              </p>
+            </div>
+            <div className="text-center">
+              <div className="inline-flex items-center justify-center w-14 h-14 bg-secondary-foreground/10 rounded-lg mb-4">
+                <span className="text-2xl">🔒</span>
+              </div>
+              <h3 className="font-semibold text-lg mb-2">Verified Sellers</h3>
+              <p className="text-sm opacity-80">
+                Trust ratings and buyer protection
+              </p>
+            </div>
+            <div className="text-center">
+              <div className="inline-flex items-center justify-center w-14 h-14 bg-secondary-foreground/10 rounded-lg mb-4">
+                <span className="text-2xl">⚡</span>
+              </div>
+              <h3 className="font-semibold text-lg mb-2">Real-Time Bidding</h3>
+              <p className="text-sm opacity-80">
+                Live countdowns and instant notifications
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* CTA Section */}
+      <section className="bg-gradient-to-r from-primary to-accent py-12 lg:py-16">
+        <div className="max-w-4xl mx-auto px-4 lg:px-8 text-center text-primary-foreground">
           <h2 className="font-serif text-3xl lg:text-4xl font-bold mb-4">
-            Ready to find your refurbished tech?
+            Ready to start bidding?
           </h2>
           <p className="text-lg mb-8 opacity-90">
-            Browse thousands of high-quality refurbished products.
+            Browse thousands of active auctions and find your next great deal.
           </p>
           <Button
             size="lg"
-            className="bg-primary text-primary-foreground hover:bg-primary/90"
+            className="bg-white text-primary hover:bg-white/90 font-semibold"
             onClick={() => navigate("/browse")}
           >
-            Start shopping
+            Browse Auctions →
           </Button>
         </div>
       </section>

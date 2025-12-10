@@ -28,13 +28,14 @@ interface Product {
   id: string;
   title: string;
   description?: string;
-  condition: "NEW" | "LIKE_NEW" | "GOOD" | "FAIR" | "POOR";
+  condition: "NEW" | "LIKE_NEW" | "GOOD" | "FAIR" | "POOR" | "EXCELLENT";
   images: string[];
   startingPrice: number;
   currentBid?: number;
   bidsCount?: number;
   reservePrice?: number;
   buyNowPrice?: number;
+  startDate: string;
   endDate: string;
   sellerId: string;
   sellerName: string;
@@ -96,7 +97,7 @@ export default function Browse() {
 
   const fetchCategories = async () => {
     try {
-      const response = await fetch("http://localhost:4000/categories");
+      const response = await fetch("/api/categories");
       if (response.ok) {
         const data = await response.json();
         setCategories(data);
@@ -114,16 +115,16 @@ export default function Browse() {
       if (searchQuery) params.append("query", searchQuery);
       if (selectedCategory) params.append("categoryId", selectedCategory);
       if (selectedConditions.length > 0)
-        params.append("condition", selectedConditions.join(","));
-      params.append("minPrice", priceRange[0].toString());
-      params.append("maxPrice", priceRange[1].toString());
+        params.append("condition", selectedConditions[0]);
+      if (priceRange[0] > 0)
+        params.append("minPrice", priceRange[0].toString());
+      if (priceRange[1] < 10000)
+        params.append("maxPrice", priceRange[1].toString());
       params.append("sortBy", sortBy);
       params.append("page", page.toString());
       params.append("limit", "20");
 
-      const response = await fetch(
-        `http://localhost:4000/products/search?${params}`,
-      );
+      const response = await fetch(`/api/products/search?${params}`);
 
       if (response.ok) {
         const data = await response.json();

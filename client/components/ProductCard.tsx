@@ -7,7 +7,7 @@ interface ProductCardProps {
   id: string;
   title: string;
   description?: string;
-  condition: "NEW" | "LIKE_NEW" | "GOOD" | "FAIR" | "POOR";
+  condition: "NEW" | "LIKE_NEW" | "GOOD" | "FAIR" | "POOR" | "EXCELLENT";
   images: string[];
   startingPrice: number;
   currentBid?: number;
@@ -99,6 +99,7 @@ export function ProductCard({
     GOOD: { label: "Good", color: "bg-cyan-100 text-cyan-800" },
     FAIR: { label: "Fair", color: "bg-yellow-100 text-yellow-800" },
     POOR: { label: "Poor", color: "bg-orange-100 text-orange-800" },
+    EXCELLENT: { label: "Excellent", color: "bg-emerald-100 text-emerald-800" },
   };
 
   const conditionInfo = conditionConfig[condition];
@@ -126,8 +127,8 @@ export function ProductCard({
   };
 
   return (
-    <Link to={`/product/${id}`}>
-      <div className="group bg-white rounded-lg overflow-hidden border border-border hover:shadow-lg transition-all duration-300 h-full flex flex-col">
+    <Link to={`/product/${id}`} className="h-full">
+      <div className="group bg-white rounded-lg overflow-hidden border border-border hover:shadow-xl hover:border-primary/20 transition-all duration-300 h-full flex flex-col">
         {/* Image Container */}
         <div className="relative overflow-hidden bg-muted aspect-square">
           <img
