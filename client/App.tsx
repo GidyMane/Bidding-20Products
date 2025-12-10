@@ -5,10 +5,8 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Home from "./pages/Home";
 import Browse from "./pages/Browse";
-import Test from "./pages/Test";
 import NotFound from "./pages/NotFound";
 import { Layout } from "./components/Layout";
-import { ErrorBoundary } from "./components/ErrorBoundary";
 
 const queryClient = new QueryClient();
 
@@ -32,10 +30,9 @@ export function App() {
         <Sonner />
         <BrowserRouter>
           <Routes>
-            <Route path="/" element={<ErrorBoundary><Home /></ErrorBoundary>} />
-            <Route path="/home" element={<ErrorBoundary><Home /></ErrorBoundary>} />
-            <Route path="/browse" element={<ErrorBoundary><Browse /></ErrorBoundary>} />
-            <Route path="/product/:id" element={<ErrorBoundary><ProductDetailPlaceholder /></ErrorBoundary>} />
+            <Route path="/" element={<Home />} />
+            <Route path="/browse" element={<Browse />} />
+            <Route path="/product/:id" element={<ProductDetailPlaceholder />} />
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />
           </Routes>
