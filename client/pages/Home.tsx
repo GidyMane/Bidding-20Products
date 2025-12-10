@@ -140,57 +140,20 @@ export default function Home() {
       {/* Hero Section - Auctions Starting Soon */}
       <HeroCarousel products={startingSoonProducts} loading={loadingProducts} />
 
-      {/* Trust Section */}
-      <section className="bg-white py-8 lg:py-12 border-b border-border">
-        <div className="max-w-7xl mx-auto px-4 lg:px-8">
-          <h2 className="text-center font-serif text-3xl font-bold mb-12">
-            Where the world shops refurbished tech.
-          </h2>
-          <p className="text-center text-muted-foreground mb-12">
-            Everything you love about new, for less.{" "}
-            <a href="#" className="underline text-foreground font-semibold">
-              Guaranteed by the Back Market Promise.
-            </a>
-          </p>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-            <div className="text-center">
-              <div className="text-3xl mb-2">⭐</div>
-              <p className="font-semibold text-sm">
-                Best-in-class refurbishment
-              </p>
-            </div>
-            <div className="text-center">
-              <div className="text-3xl mb-2">🔍</div>
-              <p className="font-semibold text-sm">
-                Up to 100-point quality inspection
-              </p>
-            </div>
-            <div className="text-center">
-              <div className="text-3xl mb-2">📦</div>
-              <p className="font-semibold text-sm">Free returns until Jan 31</p>
-            </div>
-            <div className="text-center">
-              <div className="text-3xl mb-2">🛡️</div>
-              <p className="font-semibold text-sm">1-year warranty</p>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Recommended for You Section */}
+      {/* Featured Products - Carousel Section */}
       <section className="py-12 lg:py-16">
         <div className="max-w-7xl mx-auto px-4 lg:px-8">
           <div className="flex items-center justify-between mb-8">
-            <h2 className="text-2xl lg:text-3xl font-bold">
-              Recommended for you
-            </h2>
+            <div>
+              <h2 className="text-2xl lg:text-3xl font-bold">Featured Auctions</h2>
+              <p className="text-muted-foreground text-sm mt-1">Curated items ending soon</p>
+            </div>
             <Button
               variant="ghost"
-              onClick={() => navigate("/browse")}
+              onClick={() => navigate("/browse?sortBy=newest")}
               className="text-primary hover:text-primary/80"
             >
-              See all
+              View all
               <Arrow className="ml-2 h-4 w-4" />
             </Button>
           </div>
@@ -213,62 +176,20 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Shop Our Most Wanted */}
-      <section className="py-12 lg:py-16 bg-muted/30">
-        <div className="max-w-7xl mx-auto px-4 lg:px-8">
-          <div className="flex items-center justify-between mb-8">
-            <h2 className="text-2xl lg:text-3xl font-bold">
-              Shop our most wanted
-            </h2>
-            <Button
-              variant="ghost"
-              onClick={() => navigate("/browse?sortBy=newest")}
-              className="text-primary hover:text-primary/80"
-            >
-              See all
-              <Arrow className="ml-2 h-4 w-4" />
-            </Button>
-          </div>
-
-          {loadingProducts ? (
-            <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-4 gap-4">
-              {[...Array(4)].map((_, i) => (
-                <div key={i} className="rounded-lg overflow-hidden">
-                  <Skeleton className="aspect-square" />
-                </div>
-              ))}
-            </div>
-          ) : endingSoonProducts.length > 0 ? (
-            <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-4 gap-4 lg:gap-6">
-              {endingSoonProducts.slice(0, 4).map((product) => (
-                <div
-                  key={product.id}
-                  className="rounded-lg overflow-hidden bg-primary p-4 flex items-center justify-center min-h-48"
-                >
-                  <div className="text-center text-white">
-                    <p className="text-3xl mb-2">📱</p>
-                    <p className="font-semibold">
-                      {product.title.split(" ").slice(0, 2).join(" ")}
-                    </p>
-                  </div>
-                </div>
-              ))}
-            </div>
-          ) : null}
-        </div>
-      </section>
-
       {/* Ending Soon - Carousel Section */}
-      <section className="py-12 lg:py-16">
+      <section className="py-12 lg:py-16 bg-muted/40">
         <div className="max-w-7xl mx-auto px-4 lg:px-8">
           <div className="flex items-center justify-between mb-8">
-            <h2 className="text-2xl lg:text-3xl font-bold">Ending soon</h2>
+            <div>
+              <h2 className="text-2xl lg:text-3xl font-bold">Ending Soon</h2>
+              <p className="text-muted-foreground text-sm mt-1">Don't miss these deals</p>
+            </div>
             <Button
               variant="ghost"
               onClick={() => navigate("/browse?sortBy=endDate")}
               className="text-primary hover:text-primary/80"
             >
-              See all
+              View all
               <Arrow className="ml-2 h-4 w-4" />
             </Button>
           </div>
@@ -291,21 +212,101 @@ export default function Home() {
         </div>
       </section>
 
-      {/* CTA Section */}
+      {/* Newest Listings - Carousel Section */}
+      <section className="py-12 lg:py-16">
+        <div className="max-w-7xl mx-auto px-4 lg:px-8">
+          <div className="flex items-center justify-between mb-8">
+            <div>
+              <h2 className="text-2xl lg:text-3xl font-bold">Just Added</h2>
+              <p className="text-muted-foreground text-sm mt-1">Latest auctions</p>
+            </div>
+            <Button
+              variant="ghost"
+              onClick={() => navigate("/browse?sortBy=newest")}
+              className="text-primary hover:text-primary/80"
+            >
+              View all
+              <Arrow className="ml-2 h-4 w-4" />
+            </Button>
+          </div>
+
+          {loadingProducts ? (
+            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 lg:gap-6">
+              {[...Array(8)].map((_, i) => (
+                <ProductCardSkeleton key={i} />
+              ))}
+            </div>
+          ) : newestProducts.length > 0 ? (
+            <div className="mx-auto">
+              <Carousel itemsPerView={4} gap={16} showArrows={true}>
+                {newestProducts.slice(0, 12).map((product) => (
+                  <ProductCard key={product.id} {...product} />
+                ))}
+              </Carousel>
+            </div>
+          ) : null}
+        </div>
+      </section>
+
+      {/* Trust/Info Section */}
       <section className="bg-secondary text-secondary-foreground py-12 lg:py-16">
-        <div className="max-w-4xl mx-auto px-4 lg:px-8 text-center">
+        <div className="max-w-7xl mx-auto px-4 lg:px-8">
+          <div className="text-center mb-12">
+            <h2 className="font-serif text-3xl lg:text-4xl font-bold mb-4">
+              The modern way to auction
+            </h2>
+            <p className="text-lg opacity-90">
+              Fair pricing, transparent bidding, verified sellers
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <div className="text-center">
+              <div className="inline-flex items-center justify-center w-14 h-14 bg-secondary-foreground/10 rounded-lg mb-4">
+                <span className="text-2xl">🎯</span>
+              </div>
+              <h3 className="font-semibold text-lg mb-2">Fair Auctions</h3>
+              <p className="text-sm opacity-80">
+                Open bidding ensures competitive prices
+              </p>
+            </div>
+            <div className="text-center">
+              <div className="inline-flex items-center justify-center w-14 h-14 bg-secondary-foreground/10 rounded-lg mb-4">
+                <span className="text-2xl">🔒</span>
+              </div>
+              <h3 className="font-semibold text-lg mb-2">Verified Sellers</h3>
+              <p className="text-sm opacity-80">
+                Trust ratings and buyer protection
+              </p>
+            </div>
+            <div className="text-center">
+              <div className="inline-flex items-center justify-center w-14 h-14 bg-secondary-foreground/10 rounded-lg mb-4">
+                <span className="text-2xl">⚡</span>
+              </div>
+              <h3 className="font-semibold text-lg mb-2">Real-Time Bidding</h3>
+              <p className="text-sm opacity-80">
+                Live countdowns and instant notifications
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* CTA Section */}
+      <section className="bg-gradient-to-r from-primary to-accent py-12 lg:py-16">
+        <div className="max-w-4xl mx-auto px-4 lg:px-8 text-center text-primary-foreground">
           <h2 className="font-serif text-3xl lg:text-4xl font-bold mb-4">
-            Ready to find your refurbished tech?
+            Ready to start bidding?
           </h2>
           <p className="text-lg mb-8 opacity-90">
-            Browse thousands of high-quality refurbished products.
+            Browse thousands of active auctions and find your next great deal.
           </p>
           <Button
             size="lg"
-            className="bg-primary text-primary-foreground hover:bg-primary/90"
+            className="bg-white text-primary hover:bg-white/90 font-semibold"
             onClick={() => navigate("/browse")}
           >
-            Start shopping
+            Browse Auctions →
           </Button>
         </div>
       </section>
