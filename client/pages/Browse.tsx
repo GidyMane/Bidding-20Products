@@ -28,13 +28,14 @@ interface Product {
   id: string;
   title: string;
   description?: string;
-  condition: "NEW" | "LIKE_NEW" | "GOOD" | "FAIR" | "POOR";
+  condition: "NEW" | "LIKE_NEW" | "GOOD" | "FAIR" | "POOR" | "EXCELLENT";
   images: string[];
   startingPrice: number;
   currentBid?: number;
   bidsCount?: number;
   reservePrice?: number;
   buyNowPrice?: number;
+  startDate: string;
   endDate: string;
   sellerId: string;
   sellerName: string;
