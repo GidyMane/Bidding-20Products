@@ -1,5 +1,5 @@
 import { RequestHandler } from "express";
-import { mockProducts } from "@shared/mock-products";
+import { mockProducts } from "../../shared/mock-products";
 
 export const handleGetNewest: RequestHandler = (req, res) => {
   const limit = parseInt(req.query.limit as string) || 12;
