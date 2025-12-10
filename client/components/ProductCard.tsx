@@ -101,7 +101,7 @@ export function ProductCard({
     POOR: { label: "Poor", color: "bg-orange-100 text-orange-800" },
   };
 
-  const conditionInfo = conditionConfig[condition];
+  const conditionInfo = condition ? conditionConfig[condition] : conditionConfig.GOOD;
   const imageUrl = images?.[0] || "/placeholder.svg";
 
   // Use current bid if available, otherwise starting price
