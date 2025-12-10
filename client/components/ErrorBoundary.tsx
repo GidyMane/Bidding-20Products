@@ -26,13 +26,14 @@ export class ErrorBoundary extends Component<Props, State> {
   render() {
     if (this.state.hasError) {
       return (
-        <div style={{ padding: "20px", color: "red", fontFamily: "monospace" }}>
-          <h1>Error in component</h1>
-          <details style={{ whiteSpace: "pre-wrap" }}>
-            {this.state.error?.message}
-            {"\n"}
-            {this.state.error?.stack}
-          </details>
+        <div style={{ padding: "20px", color: "red", fontFamily: "monospace", fontSize: "12px" }}>
+          <h1 style={{ color: "red" }}>Error in component</h1>
+          <div style={{ whiteSpace: "pre-wrap", wordBreak: "break-all", backgroundColor: "#f5f5f5", padding: "10px" }}>
+            <strong>Message:</strong> {this.state.error?.message || "Unknown error"}
+            {"\n\n"}
+            <strong>Stack:</strong> {"\n"}
+            {this.state.error?.stack || "No stack trace available"}
+          </div>
         </div>
       );
     }
